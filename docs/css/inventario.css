@@ -1,0 +1,9 @@
+.botones{text-align: right;}
+
+.imprimible{display: none;}
+
+@media print {
+  .noimprimir{display: none;}
+  
+  .imprimible{display: block;}
+}
