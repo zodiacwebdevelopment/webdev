@@ -1,0 +1,104 @@
+:root{--celeste: #6f42c1;}
+
+@font-face{
+	font-family: Nunito;
+	src: url(../../fuentes/Nunito-Regular.ttf);
+}
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Nunito;
+}
+
+a{
+	text-decoration: none;
+	color: white;
+}
+
+h1{font-size: 1.2rem;}
+
+h2{
+	font-size: .9rem;
+	color: var(--celeste);
+	margin-left: .5rem;
+}
+
+h3{font-size: .8rem;}
+
+p{font-size: .8rem;}
+
+header{
+	height: 3rem;
+	width: 100%;
+	padding: 0 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: var(--celeste);	
+}
+
+header h1{color: white;}
+
+.header-right{
+	display: flex;
+	justify-content: space-between;	
+}
+
+.header-right a{margin: 0 .5rem;}
+
+.description{
+	margin: auto;
+	text-align: center;
+	margin: 2rem;
+}
+
+.carrusel{
+	width: 100%;
+	padding: 1rem 0;
+	display: flex;
+}
+
+	.card{
+		height: 6rem;
+		width: 7rem;
+		margin: 0 .5rem;
+		background: rgba(0,0,150,.1);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 20px;
+	}
+		
+		.card a{
+			font-size: 2rem;
+			color: var(--celeste);
+		}
+		
+	.card:hover{background: var(--celeste);}
+	
+	.card:hover a{color: white;}
+	
+.boxes{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+	.coments{
+		border: 1px solid #bbb;
+		border-radius: 10px;
+		padding: .5rem;
+		margin: .5rem 1rem;
+		display: flex;
+		align-items: center;
+	}
+	
+	.coments div{padding: .5rem 1rem;}
+	
+img{
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+}
