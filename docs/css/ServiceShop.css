@@ -2,14 +2,14 @@
 
 @font-face{
 	font-family: Nunito;
-	src: url(fuentes/Nunito-Regular.ttf);
+	src: url(../fuentes/Nunito-Regular.ttf);
 }
 
 *{
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Nunito', monospace;
+	font-family: 'Nunito', sans-serif;
 }
 
 a{
