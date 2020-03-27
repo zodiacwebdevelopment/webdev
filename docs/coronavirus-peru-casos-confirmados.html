@@ -22,9 +22,15 @@
 		margin: 1rem auto;
 	}
 	
-	p{
-		margin: 0 0 2rem 2rem;
+	.p{
+		margin: 0 2rem 2rem;
 		font-size: .7rem;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.pred{
+		color: #28a745;
 	}
 	
 	a{
@@ -66,6 +72,12 @@
   		font-family: sans-serif;
   		margin-bottom: .5rem;
 	}
+
+	@media only screen and (min-width: 720px){
+		.right {
+		    align-self: flex-end;
+		}
+	}
   </style>
 </head>
 
@@ -74,15 +86,19 @@
 <div>
 <canvas id="myChart" width="400" height="400"></canvas>
 </div>
-<p>Basada en datos del <a href="" >MINSA</a></p>
+<div class="p">
+	<p>Basada en datos del <a href="" >MINSA</a></p>
+	<p class="right">Predicciones para mañana:</p>
+	<p class="right">Nuevos infectados: <span class="pred" id="nuevos"></span></p>
+	<p class="right">Total infectados: <span class="pred" id="total"></span></p>
+</div>
 <form name="form">
 	<a class="download" download="covid19-infected-chart-peru" id="descargar">Guardar gráfico</a>
 </form>
 
 	<script src="chart/Chart.min.js"></script>
 	<script type="text/javascript">
-		 var infected = [1,6,7,9,11,17,22,38,46,71,86,117,145,234,263,318,363,395, 416, 480,580,635];
-		 function diferencia(array){
+                 function diferencia(array){
 		 	let nuevos = []
 		 	for(let i=0; i<array.length; i++){
 		 		if(array[i-1]){
@@ -92,7 +108,31 @@
 		 	}
 		 	return nuevos;
 		 }
-		 
+
+                 function regresionLineal(futuro){
+			 let a     = 0, 
+				 b     = 0,
+				 n     = infected.length,
+				 sumx  = 0,
+				 sumy  = 0,
+				 sumxy = 0,
+				 sumxx = 0;
+			 
+			 for(let i=0; i<n; i++){
+				 sumx  += i;
+				 sumy  += diferencia(infected)[i];
+				 sumxy += i*diferencia(infected)[i];
+				 sumxx += i*i;
+			 }
+				 
+			 b = (sumx*sumy - n*sumxy)/(sumx*sumx - n*sumxx);
+			 a = (sumy - b*sumx)/n;
+			 return a + b*futuro;
+		 }
+
+		 var infected = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635];
+		 var labels   = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27'];
+
 		 Chart.plugins.register({
 		 beforeDraw: function(chartInstance) {
 		 var ctx = chartInstance.chart.ctx;
@@ -104,7 +144,7 @@
 		 var myChart = new Chart(ctx, { 
 		 	type: 'line', 
 			 data: { 
-			 	labels: ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26', 'marzo 27'], 
+			 	labels: labels, 
 			 	datasets: [{ 
 			 		label: 'Total de infectados por día', 
 					data: infected,
@@ -136,7 +176,10 @@
 			let canvasurl = document.getElementById("myChart").toDataURL("image/jpeg", 1.0);
 			a.setAttribute("href", canvasurl);
 		});
-		
+
+		console.log(Math.round(regresionLineal(infected.length)));
+		console.log(regresionExponencial(infected.length));
+
 	</script>
 </body>
 </html>
