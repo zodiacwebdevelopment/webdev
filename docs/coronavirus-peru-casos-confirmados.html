@@ -177,6 +177,9 @@
 			a.setAttribute("href", canvasurl);
 		});
 
+                const total  = document.getElementById("total");
+                const nuevos = document.getElementById("nuevos");
+
 		total.innerHTML  = Math.round(infected[infected.length-1]+regresionLineal(infected.length));
 		nuevos.innerHTML = Math.round(regresionLineal(infected.length));
 
