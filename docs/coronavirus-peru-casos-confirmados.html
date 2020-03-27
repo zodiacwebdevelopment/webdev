@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Infectados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="">
+  <link rel="shortcut icon" href"">
+  <style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		font-family: sans-serif;
+	}
+	
+	#myChart{
+		margin-bottom: 1rem;
+	}
+	
+	h1{
+		margin: 1rem auto;
+	}
+	
+	p{
+		margin: 0 0 2rem 2rem;
+		font-size: .7rem;
+	}
+	
+	a{
+		text-decoration: none;
+		color: #007bff;
+	}
+
+  	.download{
+  		padding: 10px;
+  		width: 50%;
+  		margin: auto;
+  		text-align: center;
+  		color: white;
+  		background: #007bff;
+  		box-sizing: border-box;
+  		border-radius: 5px;
+  		font-family: sans-serif;
+  	}
+  	
+  	form{
+  		margin-bottom: 2rem;
+		display: flex;
+		flex-direction: column;
+  	}
+  	
+  	.number{
+  		padding: 8px;
+  		border: 1px solid #bbb;
+  		border-radius: 6px;
+  		margin-bottom: .5rem;
+  	}
+  	
+	.btn{
+		padding: 10px;
+  		text-align: center;
+  		color: white;
+  		background: #007bff;
+  		border-radius: 5px;
+  		font-family: sans-serif;
+  		margin-bottom: .5rem;
+	}
+  </style>
+</head>
+
+<body>
+<h1>Coronavirus en Perú: Casos confirmados</h1>
+<div>
+<canvas id="myChart" width="400" height="400"></canvas>
+</div>
+<p>Basada en datos del <a href="" >MINSA</a></p>
+<form name="form">
+	<a class="download" download="covid19-infected-chart-peru" id="descargar">Guardar gráfico</a>
+</form>
+
+	<script src="chart/Chart.min.js"></script>
+	<script type="text/javascript">
+		 var infected = [1,6,7,9,11,17,22,38,46,71,86,117,145,234,263,318,363,395, 416, 480,580];
+		 function diferencia(array){
+		 	let nuevos = []
+		 	for(let i=0; i<array.length; i++){
+		 		if(array[i-1]){
+		 			nuevos.push(array[i]-array[i-1]);
+		 		}
+		 		else nuevos.push(array[i]);
+		 	}
+		 	return nuevos;
+		 }
+		 
+		 Chart.plugins.register({
+		 beforeDraw: function(chartInstance) {
+		 var ctx = chartInstance.chart.ctx;
+		 ctx.fillStyle = "white";
+		 ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
+		 }
+		 });
+		 var ctx = document.getElementById('myChart').getContext('2d'); 
+		 var myChart = new Chart(ctx, { 
+		 	type: 'line', 
+			 data: { 
+			 	labels: ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26'], 
+			 	datasets: [{ 
+			 		label: 'Total de infectados por día', 
+					data: infected,
+			 		fill: false,
+			 		lineTension: 0,
+			 		backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ], 
+			 		borderColor: 'rgba(54, 162, 235, 1)', 
+			 		borderWidth: 2 },{
+			 		label: 'Nuevos infectados por día',
+			 		data: diferencia(infected),
+			 		fill: false,
+			 		lineTension: 0,
+			 		borderWidth: 1,
+			 		borderColor: 'rgb(0,255,0)'
+			 		}
+			 	]}, 
+			 	options: { 
+			 		scales: { 
+			 			yAxes: [{ 
+			 				ticks: { 
+			 					beginAtZero: false  } 
+			 				}] 
+			 			} 
+			 		} 
+			 	});
+		const a = document.getElementById("descargar");
+		
+		a.addEventListener("click", function(){
+			let canvasurl = document.getElementById("myChart").toDataURL("image/jpeg", 1.0);
+			a.setAttribute("href", canvasurl);
+		});
+		
+	</script>
+</body>
+</html>
