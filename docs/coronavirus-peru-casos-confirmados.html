@@ -177,8 +177,8 @@
 			a.setAttribute("href", canvasurl);
 		});
 
-		console.log(Math.round(regresionLineal(infected.length)));
-		console.log(regresionExponencial(infected.length));
+		total.innerHTML  = Math.round(infected[infected.length-1]+regresionLineal(infected.length));
+		nuevos.innerHTML = Math.round(regresionLineal(infected.length));
 
 	</script>
 </body>
