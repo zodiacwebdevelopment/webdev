@@ -29,9 +29,13 @@
 		flex-direction: column;
 	}
 	
-	.pred{
+	.pred1{
 		color: #28a745;
 	}
+        
+        .pred2{
+                color: #007bff;
+        }
 	
 	a{
 		text-decoration: none;
@@ -89,8 +93,8 @@
 <div class="p">
 	<p>Basada en datos del <a href="https://www.gob.pe/minsa/" target="_blank">MINSA</a></p>
 	<p class="right">Predicciones para mañana:</p>
-	<p class="right">Nuevos infectados: <span class="pred" id="nuevos"></span></p>
-	<p class="right">Total infectados: <span class="pred" id="total"></span></p>
+	<p class="right">Nuevos infectados: <span class="pred1" id="nuevos"></span></p>
+	<p class="right">Total infectados: <span class="pred2" id="total"></span></p>
 </div>
 <form name="form">
 	<a class="download" download="covid19-infected-chart-peru" id="descargar">Guardar gráfico</a>
@@ -130,8 +134,8 @@
 			 return a + b*futuro;
 		 }
 
-		 var infected = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635];
-		 var labels   = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27'];
+		 var infected = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635, 671];
+		 var labels   = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28'];
 
 		 Chart.plugins.register({
 		 beforeDraw: function(chartInstance) {
