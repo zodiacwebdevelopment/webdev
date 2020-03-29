@@ -26,7 +26,7 @@
 		margin: 0 2rem 2rem;
 		font-size: .7rem;
 		display: flex;
-		flex-direction: column;
+		justify-content: space-between;
 	}
 	
 	.pred1{
@@ -91,10 +91,16 @@
 <canvas id="myChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
-	<p>Basada en datos del <a href="https://www.gob.pe/minsa/" target="_blank">MINSA</a></p>
-	<p class="right">Predicciones para mañana:</p>
+    <div>
+	<p>Total infectados: <span class="pred2" id="totala"></span></p>
+        <p>Nuevos infectados: <span class="pred1" id="nuevosa"></span></p>
+        <p>Basada en datos del <a href="https://www.gob.pe/minsa/" target="_blank">MINSA</a></p>
+    </div>
+    <div>
+        <p class="right">Predicciones para marzo 30:</p>
 	<p class="right">Nuevos infectados: <span class="pred1" id="nuevos"></span></p>
 	<p class="right">Total infectados: <span class="pred2" id="total"></span></p>
+    </div>
 </div>
 <form name="form">
 	<a class="download" download="covid19-infected-chart-peru" id="descargar">Guardar gráfico</a>
@@ -134,8 +140,8 @@
 			 return a + b*futuro;
 		 }
 
-		 var infected = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635, 671];
-		 var labels   = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28'];
+		 var infected = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635, 671, 852];
+		 var labels   = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28','marzo 29'];
 
 		 Chart.plugins.register({
 		 beforeDraw: function(chartInstance) {
@@ -150,14 +156,14 @@
 			 data: { 
 			 	labels: labels, 
 			 	datasets: [{ 
-			 		label: 'Total de infectados por día', 
+			 		label: 'Total de infectados', 
 					data: infected,
 			 		fill: false,
 			 		lineTension: 0,
 			 		backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ], 
 			 		borderColor: 'rgba(54, 162, 235, 1)', 
 			 		borderWidth: 2 },{
-			 		label: 'Nuevos infectados por día',
+			 		label: 'Nuevos infectados',
 			 		data: diferencia(infected),
 			 		fill: false,
 			 		lineTension: 0,
