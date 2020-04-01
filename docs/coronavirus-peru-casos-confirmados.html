@@ -214,8 +214,8 @@
                 const total  = document.getElementById("total");
                 const nuevos = document.getElementById("nuevos");
 
-		total.innerHTML  = Math.round(infected[infected.length-1]+regresionExponencial(infected.length));
-		nuevos.innerHTML = Math.round(regresionExponencial(infected.length));
+		total.innerHTML  = Math.round(infected[infected.length-1]+regresionExponencial(diferencia(infected),infected.length));
+		nuevos.innerHTML = Math.round(regresionExponencial(diferencia(infected),infected.length));
                 totala.innerHTML = infected[infected.length-1];
                 nuevosa.innerHTML = diferencia(infected)[infected.length-1];
 	</script>
