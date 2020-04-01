@@ -86,7 +86,7 @@
 </head>
 
 <body>
-<h1>Coronavirus en Perú: Casos confirmados</h1>
+<h1>Covid-19 en Perú: Casos confirmados</h1>
 <div>
 <canvas id="myChart" width="400" height="400"></canvas>
 </div>
@@ -180,14 +180,14 @@
 			 data: { 
 			 	labels: labels, 
 			 	datasets: [{ 
-			 		label: 'Total de infectados', 
+			 		label: 'Total de casos', 
 					data: infected,
 			 		fill: false,
 			 		lineTension: 0,
 			 		backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ], 
 			 		borderColor: 'rgba(54, 162, 235, 1)', 
 			 		borderWidth: 2 },{
-			 		label: 'Nuevos infectados',
+			 		label: 'Nuevos casos',
 			 		data: diferencia(infected),
 			 		fill: false,
 			 		lineTension: 0,
