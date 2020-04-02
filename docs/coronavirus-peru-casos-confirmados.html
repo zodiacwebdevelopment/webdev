@@ -5,7 +5,8 @@
   <title>Infectados</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="">
-  <link rel="shortcut icon" href"">
+  <link rel="shortcut icon" href="">
+  <link rel="stylesheet" href="font-awesome/css/all.css">
   <style type="text/css">
 	*{
 		margin: 0;
@@ -14,7 +15,7 @@
 		font-family: sans-serif;
 	}
 	
-	#myChart, #deathChart, #recoveredChart{
+	.chart{
 		margin-bottom: 1rem;
 	}
 	
@@ -84,10 +85,56 @@
 		font-size: .9rem;
 		margin-bottom: 2rem;
 	}
+	
+	footer{
+		background: #111 ;
+		color: #ddd;
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+	}
+	
+		footer h1{
+			margin: 1rem 0;
+			font-size: 1.5rem;
+		}
+		
+		footer p{
+			font-size: .8rem;
+			line-height: 1.2rem;
+		}
+		
+		.contacto {
+			display: flex;
+			padding: .5rem;
+			height: 3rem;
+		}
+		
+		.contacto i {
+			font-size: 1.5rem;
+			color: #6c757d;
+			margin-right: 2rem;
+		}
+		
+		.contacto i:hover{
+			color: white;
+			font-size: 1.7rem;
+		}
+		
+		footer h3{
+			font-size: .5rem;
+			color: #6c757d;
+			align-self: center;
+			margin: 1rem 0 0 0;
+		}
 
-	@media only screen and (min-width: 720px){
-		.right {
-		    align-self: flex-end;
+	@media only screen and (min-width: 720px) {
+		p{
+			font-size: .9rem;
+		}
+		
+		.p div{
+			width: 12rem;
 		}
 	}
   </style>
@@ -96,7 +143,7 @@
 <body>
 <h1>COVID-19 en Perú</h1>
 <div>
-	<canvas id="myChart" width="400" height="400"></canvas>
+	<canvas class="chart" id="myChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
     <div>
@@ -114,34 +161,60 @@
 	<a class="download" download="covid19-infected-chart-peru" id="descargar">Guardar gráfico</a>
 </form>
 <div>
-	<canvas id="deathChart" width="400" height="400"></canvas>
+	<canvas class="chart" id="deathChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
     <div>
 	    <p>Total fallecidos: <span class="preddead" id="deada"></span></p>
-    </div>
-    <div>
     </div>
 </div>
 <form name="form">
 	<a class="download" download="covid19-dead-chart-peru" id="descargar1">Guardar gráfico</a>
 </form>
 <div>
-	<canvas id="recoveredChart" width="400" height="400"></canvas>
+	<canvas class="chart" id="recoveredChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
     <div>
 	    <p>Total recuperados: <span class="predrecovered" id="recovereda"></span></p>
     </div>
-    <div>
-    </div>
 </div>
 <form name="form">
 	<a class="download" download="covid19-recovered-chart-peru" id="descargar2">Guardar gráfico</a>
 </form>
+<div>
+	<canvas class="chart" id="regionesChart" width="480" height="720"></canvas>
+</div>
+<div class="p">
+    <div>
+	    <p>*En Lima se encuentra la mayor cantidad de infectados (1059 hasta la fecha), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos.</p>
+    </div>
+</div>
+<form name="form">
+	<a class="download" download="covid19-por-departamento-chart-peru" id="descargar3">Guardar gráfico</a>
+</form>
 <div class="globalp">
 	<p>Gráficos basados en datos del <a href="https://www.gob.pe/minsa/" target="_blank">MINSA</a></p>
 </div>	
+<footer>
+	<h1>Acerca de</h1>
+	<p>
+		Los gráficos fueron hechos con Chart.js (una librería de javascript) y con información pública recopilada de la página web del MINSA. 
+		Por ello, está libre de derechos de autor y puede ser usada libremente. El propósito de esta página no es el de alarmar a la población, sino
+		 ofrecer información clara y de manera objetiva para estar al tanto de la situación actual del Perú.
+	</p>
+	<h1>Quiénes somos</h1>
+	<p>
+		Soy un estudiante de ingeniería ambiental y sanitaria, amante de la estadística y que en sus ratos libres desarrolla páginas web.
+	</p>
+	<h1>Contáctame</h1>
+	<div class="contacto">
+		<a href="https://www.facebook.com/axelsteven.sifuentespalacios" target="_blank"><i class="fab fa-facebook-f"></i></a>
+		<a href="https://api.whatsapp.com/send?phone=51986173780" target="_blank"><i class="fab fa-whatsapp"></i></a>
+	    <a href="mailto:steven.tauro2000.b@gmail.com" target="_blank"><i class="fab fa-google"></i></a>
+	</div>
+	<h3>Zodiacwebdevelopment 2020</h3>
+</footer>
 	<script src="chart/Chart.min.js"></script>
 	<script type="text/javascript">
          function diferencia(array){
@@ -153,6 +226,46 @@
 		 		else nuevos.push(array[i]);
 		 	}
 		 	return nuevos;
+		 }
+		 
+		 function getRandomColor(array) {
+			 var num=(Math.floor(Math.random()*4)*4).toString(16);
+			 var letters = ['0','F',num];
+			 var color = '#';
+			 
+			 for (var i = 0; i < 3; i++ ) {
+				 let pos=Math.floor(Math.random() * letters.length);
+				 color += letters[pos];
+				 letters.splice(pos,1);
+			 }
+			 
+			 //para evitar que se repitan colores 
+			 if(array.includes(color))
+			 return getRandomColor(array);
+			 else
+			 array.push(color)
+		 }
+		 
+		 function crearColores(len){
+		 	let colors = [];
+		 	for(i=0; i<len; i++){
+		 		getRandomColor(colors);
+		 	}
+		 	return colors;
+		 }
+		 
+		 function ordenarRegiones(){
+		 	let nombre = [];
+		 	let casos = [];
+		 	regiones.sort(function(prev, next){
+		 		return next.casos - prev.casos;
+		 	});
+		 	for(let i=0; i<regiones.length; i++){
+		 		nombre[i] = regiones[i].nombre;
+		 		casos[i] = regiones[i].casos;
+		 	}
+		 	return {x: casos,
+		 		    y: nombre};
 		 }
 		 
 		 function downloadCanvas(ancla, chart){
@@ -216,6 +329,26 @@
 		 var infected    = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635, 671, 852, 950, 1065, 1323, 1414],
 		     recuperados = [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,4,4,14,16,16,16,269,394,447,537],
 		     dead        = [0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,5,5,5,7,9,9,11,16,18,24,30,47,47],
+		     regiones    = [//{nombre: "Lima", casos:1059 },
+		     				{nombre: "Loreto", casos:72},
+		     				{nombre: "Callao", casos:40 },
+		     				{nombre: "Lambayeque", casos:37 },
+		     				{nombre: "Piura", casos:27 },
+		     				{nombre: "Cusco", casos:38 },
+		     				{nombre: "Arequipa", casos:30 },
+		     				{nombre: "Junín", casos:17 },
+		     				{nombre: "La Libertad", casos:34 },
+		     				{nombre: "Tumbes", casos:15},
+		     				{nombre: "Ancash", casos:15 },
+		     				{nombre: "Ica", casos:8 },
+		     				{nombre: "Huánuco", casos:6 },
+		     				{nombre: "San Martín", casos:6 },
+		     				{nombre: "Ayacucho", casos:1 },
+		     				{nombre: "Cajamarca", casos:3},
+		     				{nombre: "Madre de Dios", casos:1 },
+		     				{nombre: "Tacna", casos:3 },
+		     				{nombre: "Huancavelica", casos:1 },
+		     				{nombre: "Pasco", casos:1 }],     
 		     labels      = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28','marzo 29','marzo 30','marzo 31','abril 1'];
 			 
 		 Chart.plugins.register({
@@ -229,8 +362,9 @@
 		 
 		 var ctx  = document.getElementById('myChart').getContext('2d'),
 		       ctx2 = document.getElementById('deathChart').getContext('2d'),
-		       ctx3 = document.getElementById('recoveredChart').getContext('2d');
-		 
+		       ctx3 = document.getElementById('recoveredChart').getContext('2d'),
+		       ctx4 = document.getElementById('regionesChart').getContext('2d');
+		 	
 		 /*Chart.plugins.register({
 		 beforeDraw: function(chartInstance) {
 		 var ctx = chartInstance.chart.ctx;
@@ -356,9 +490,54 @@
 			}
 		});
 		
+		var regionesChart = new Chart(ctx4, {
+			type: "horizontalBar",
+			data:{
+			labels: ordenarRegiones().y,
+			datasets:[{
+				data: ordenarRegiones().x,
+				backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)' ]
+				//backgroundColor: crearColores(regiones.length)
+			}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: "Casos por departamento*",
+					fontSize: 21
+				},
+				legend: {
+					display: false
+				},
+				"hover": {
+				"animationDuration": 0
+				},
+				"animation": {
+				"duration": 1,
+				"onComplete": function() {
+				var chartInstance = this.chart,
+				ctx = chartInstance.ctx;
+				
+				ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+				ctx.textAlign = 'start';
+				ctx.textBaseline = 'top';
+				
+				this.data.datasets.forEach(function(dataset, i) {
+				var meta = chartInstance.controller.getDatasetMeta(i);
+				meta.data.forEach(function(bar, index) {
+				var data = dataset.data[index];
+				ctx.fillText(data, bar._model.x+5, bar._model.y-5);
+				});
+				});
+				}
+				}
+			}
+		});
+		
 		const a = document.getElementById("descargar"),
 		      b = document.getElementById("descargar1"),
-		      c = document.getElementById("descargar2");
+		      c = document.getElementById("descargar2"),
+		      d = document.getElementById("descargar3");
 		
 		a.addEventListener("click", function(){
 			let canvasurl = document.getElementById("myChart").toDataURL("image/jpeg", 1.0);
@@ -371,6 +550,10 @@
 		c.addEventListener("click", function(){
 			let canvasurl = document.getElementById("recoveredChart").toDataURL("image/jpeg", 1.0);
 			c.setAttribute("href", canvasurl);
+		});
+		d.addEventListener("click", function(){
+			let canvasurl = document.getElementById("regionesChart").toDataURL("image/jpeg", 1.0);
+			d.setAttribute("href", canvasurl);
 		});
 
         const total  = document.getElementById("total"),
