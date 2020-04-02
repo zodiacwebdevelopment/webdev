@@ -14,7 +14,7 @@
 		font-family: sans-serif;
 	}
 	
-	#myChart{
+	#myChart, #deathChart, #recoveredChart{
 		margin-bottom: 1rem;
 	}
 	
@@ -29,18 +29,19 @@
 		justify-content: space-between;
 	}
 	
-	.pred1{
-		color: #28a745;
-	}
+	.pred1{color: #28a745;}
         
-        .pred2{
-                color: #007bff;
-        }
+    .pred2{color: #007bff;}
+        
+    .preddead{color: #dc3545;}
+        
+    .predrecovered{color: #17a2b8;}
 	
 	a{
 		text-decoration: none;
 		color: #007bff;
 	}
+
   	.download{
   		padding: 10px;
   		width: 50%;
@@ -75,6 +76,15 @@
   		font-family: sans-serif;
   		margin-bottom: .5rem;
 	}
+	
+	.globalp{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: .9rem;
+		margin-bottom: 2rem;
+	}
+
 	@media only screen and (min-width: 720px){
 		.right {
 		    align-self: flex-end;
@@ -84,28 +94,57 @@
 </head>
 
 <body>
-<h1>COVID-19 en Perú: Casos confirmados</h1>
+<h1>COVID-19 en Perú</h1>
 <div>
-<canvas id="myChart" width="400" height="400"></canvas>
+	<canvas id="myChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
     <div>
-	<p>Total infectados: <span class="pred2" id="totala"></span></p>
+	    <p>Abril 1 (día 27):</p>
+	    <p>Total infectados: <span class="pred2" id="totala"></span></p>
         <p>Nuevos infectados: <span class="pred1" id="nuevosa"></span></p>
-        <p>Basada en datos del <a href="https://www.gob.pe/minsa/" target="_blank">MINSA</a></p>
     </div>
     <div>
         <p class="right">Predicciones para abril 2:</p>
-	<p class="right">Nuevos infectados: <span class="pred1" id="nuevos"></span></p>
-	<p class="right">Total infectados: <span class="pred2" id="total"></span></p>
+		<p class="right">Nuevos infectados: <span class="pred1" id="nuevos"></span></p>
+		<p class="right">Total infectados: <span class="pred2" id="total"></span></p>
     </div>
 </div>
 <form name="form">
 	<a class="download" download="covid19-infected-chart-peru" id="descargar">Guardar gráfico</a>
 </form>
-	<script src="chart/Chart.min.js"></script>
+<div>
+	<canvas id="deathChart" width="400" height="400"></canvas>
+</div>
+<div class="p">
+    <div>
+	    <p>Total fallecidos: <span class="preddead" id="deada"></span></p>
+    </div>
+    <div>
+    </div>
+</div>
+<form name="form">
+	<a class="download" download="covid19-dead-chart-peru" id="descargar1">Guardar gráfico</a>
+</form>
+<div>
+	<canvas id="recoveredChart" width="400" height="400"></canvas>
+</div>
+<div class="p">
+    <div>
+	    <p>Total recuperados: <span class="predrecovered" id="recovereda"></span></p>
+    </div>
+    <div>
+    </div>
+</div>
+<form name="form">
+	<a class="download" download="covid19-recovered-chart-peru" id="descargar2">Guardar gráfico</a>
+</form>
+<div class="globalp">
+	<p>Gráficos basados en datos del <a href="https://www.gob.pe/minsa/" target="_blank">MINSA</a></p>
+</div>	
+	<script src="../../Web Development/frameworks/Chart.min.js"></script>
 	<script type="text/javascript">
-                 function diferencia(array){
+         function diferencia(array){
 		 	let nuevos = []
 		 	for(let i=0; i<array.length; i++){
 		 		if(array[i-1]){
@@ -115,10 +154,24 @@
 		 	}
 		 	return nuevos;
 		 }
-                 function regresionLineal(futuro){
+		 
+		 function downloadCanvas(ancla, chart){
+		 	let canvasurl = document.getElementById(chart).toDataURL("image/jpeg", 1.0);
+		 	ancla.setAttribute("href", canvasurl);
+		 }
+		 
+		 function crearDias(len){
+		 	let dias = [];
+		 	for(let i=0; i<len; i++){
+		 		dias[i] = i+1;
+		 	}
+		 	return dias;
+		 }
+
+         function regresionLineal(array, futuro){
 			 let a     = 0, 
 				 b     = 0,
-				 n     = infected.length,
+				 n     = array.length,
 				 sumx  = 0,
 				 sumy  = 0,
 				 sumxy = 0,
@@ -126,8 +179,8 @@
 			 
 			 for(let i=0; i<n; i++){
 				 sumx  += i;
-				 sumy  += diferencia(infected)[i];
-				 sumxy += i*diferencia(infected)[i];
+				 sumy  += array[i];
+				 sumxy += i*array[i];
 				 sumxx += i*i;
 			 }
 				 
@@ -135,7 +188,8 @@
 			 a = (sumy - b*sumx)/n;
 			 return a + b*futuro;
 		 }
-                 function regresionExponencial(array, futuro){
+
+         function regresionExponencial(array, futuro){
 			 let a       = 0,
 				 b       = 0,
 				 n       = array.length,
@@ -158,59 +212,176 @@
 			 a = Math.pow(Math.E,(mlny - b*mx));
 			 return a*Math.pow(Math.E,b*futuro);
 		 }
-		 var infected = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635, 671, 852, 950, 1065, 1323];
-		 var labels   = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28','marzo 29','marzo 30','marzo 31','abril 1'];
+
+		 var infected    = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635, 671, 852, 950, 1065, 1323],
+		     recuperados = [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,4,4,14,16,16,16,269,394,447],
+		     dead        = [0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,5,5,5,7,9,9,11,16,18,24,30,47],
+		     labels      = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28','marzo 29','marzo 30','marzo 31','abril 1'];
+			 
 		 Chart.plugins.register({
+			 beforeDraw: function(chartInstance) {
+			 var ctx = chartInstance.chart.ctx;
+				 ctx.fillStyle = "white";
+				 ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
+			 }
+		 });
+		 
+		 
+		 var ctx  = document.getElementById('myChart').getContext('2d'),
+		       ctx2 = document.getElementById('deathChart').getContext('2d'),
+		       ctx3 = document.getElementById('recoveredChart').getContext('2d');
+		 
+		 /*Chart.plugins.register({
 		 beforeDraw: function(chartInstance) {
 		 var ctx = chartInstance.chart.ctx;
-		 ctx.fillStyle = "white";
+		 ctx.fillStyle = "#ffffff";
 		 ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
 		 }
-		 });
-		 var ctx = document.getElementById('myChart').getContext('2d'); 
+		 });*/
+		 
 		 var myChart = new Chart(ctx, { 
 		 	type: 'line', 
 			 data: { 
-			 	labels: labels, 
+			 	labels: crearDias(infected.length), 
 			 	datasets: [{ 
-			 		label: 'Total de infectados', 
 			 		label: 'Total de casos', 
 					data: infected,
 			 		fill: false,
 			 		lineTension: 0,
 			 		backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ], 
 			 		borderColor: 'rgba(54, 162, 235, 1)', 
-			 		borderWidth: 2 },{
-			 		label: 'Nuevos infectados',
+			 		borderWidth: 2,
+			 		pointRadius: 2
+			 		 },{
 			 		label: 'Nuevos casos',
 			 		data: diferencia(infected),
 			 		fill: false,
 			 		lineTension: 0,
-			 		borderWidth: 1,
-			 		borderColor: 'rgb(0,255,0)'
+			 		borderWidth: 2,
+			 		borderColor: 'rgb(0,255,0)',
+			 		pointRadius: 2
 			 		}
 			 	]}, 
 			 	options: { 
+			 		title: {
+			 			display: true,
+			 			text: "Casos confirmados",
+			 			fontSize: 18
+			 		},
+			 		legend: {
+						//display: false
+			 		},
 			 		scales: { 
-			 			yAxes: [{ 
+			 			xAxes: [{ 
 			 				ticks: { 
-			 					beginAtZero: false  } 
+			 					beginAtZero: false,
+			 					 callback: function(value, index, values) {
+			 					 return 'dia ' + value;
+			 					 }} 
 			 				}] 
 			 			} 
 			 		} 
 			 	});
-		const a = document.getElementById("descargar");
+		
+		var deathChart = new Chart(ctx2, {
+			type: "line",
+			data: {
+				labels: crearDias(infected.length),
+				datasets: [{
+					data: dead,
+					fill: false,
+					lineTension: 0,
+					borderColor: '#dc3545', 
+					borderWidth: 2,
+					pointRadius: 2
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: "Muertes confirmadas",
+					fontSize: 18
+				},
+				legend:{
+					display: false
+				},
+				scales: {
+					xAxes: [{
+						ticks: {
+							// Include a dollar sign in the ticks
+							beginAtZero: true,
+							callback: function(value, index, values) {
+								return 'dia ' + value;
+							}
+						}
+					}]
+				}
+			}
+		});
+		
+		var recoveredChart = new Chart(ctx3, {
+			type: 'line',
+			data: {
+				labels: crearDias(infected.length),
+				datasets: [{
+					data: recuperados,
+					fill: false,
+					lineTension: 0,
+					borderColor: '#17a2b8', 
+					borderWidth: 2,
+					pointRadius: 2
+					
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: "Casos recuperados",
+					fontSize: 18
+				},
+				legend:{
+					display: false
+				},
+				scales: {
+					xAxes: [{
+						ticks: {
+							// Include a dollar sign in the ticks
+							beginAtZero: true,
+							callback: function(value, index, values) {
+								return 'dia ' + value;
+							}
+						}
+					}]
+				}
+			}
+		});
+		
+		const a = document.getElementById("descargar"),
+		      b = document.getElementById("descargar1"),
+		      c = document.getElementById("descargar2");
 		
 		a.addEventListener("click", function(){
 			let canvasurl = document.getElementById("myChart").toDataURL("image/jpeg", 1.0);
 			a.setAttribute("href", canvasurl);
 		});
-                const total  = document.getElementById("total");
-                const nuevos = document.getElementById("nuevos");
-		total.innerHTML  = Math.round(infected[infected.length-1]+regresionExponencial(diferencia(infected),infected.length));
-		nuevos.innerHTML = Math.round(regresionExponencial(diferencia(infected),infected.length));
-                totala.innerHTML = infected[infected.length-1];
-                nuevosa.innerHTML = diferencia(infected)[infected.length-1];
+		b.addEventListener("click", function(){
+			let canvasurl = document.getElementById("deathChart").toDataURL("image/jpeg", 1.0);
+			b.setAttribute("href", canvasurl);
+		});
+		c.addEventListener("click", function(){
+			let canvasurl = document.getElementById("recoveredChart").toDataURL("image/jpeg", 1.0);
+			c.setAttribute("href", canvasurl);
+		});
+
+        const total  = document.getElementById("total"),
+              nuevos = document.getElementById("nuevos");
+
+		total.innerHTML      = Math.round(infected[infected.length-1]+regresionExponencial(diferencia(infected),infected.length));
+		nuevos.innerHTML     = Math.round(regresionExponencial(diferencia(infected),infected.length));
+        deada.innerHTML      = dead[dead.length - 1];
+        recovereda.innerHTML = recuperados[recuperados.length-1];
+        totala.innerHTML     = infected[infected.length-1];
+        nuevosa.innerHTML    = diferencia(infected)[infected.length-1];
 	</script>
 </body>
 </html>
