@@ -2,146 +2,172 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Infectados</title>
+  <title>COVID-19 en Perú</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="">
-  <link rel="shortcut icon" href="">
-  <link rel="stylesheet" href="font-awesome/css/all.css">
+  <link rel="shortcut icon" href="../../Web Development/favicons/coronavirushd.ico">
+  <link rel="stylesheet" href="../../Web Development/font-awesome/css/all.css">
+  <!--<link rel="stylesheet" href="infected.css">-->
   <style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-		font-family: sans-serif;
-	}
-	
-	.chart{
-		margin-bottom: 1rem;
-	}
-	
-	h1{
-		margin: 1rem auto;
-	}
-	
-	.p{
-		margin: 0 2rem 2rem;
-		font-size: .7rem;
-		display: flex;
-		justify-content: space-between;
-	}
-	
-	.pred1{color: #28a745;}
-        
-    .pred2{color: #007bff;}
-        
-    .preddead{color: #dc3545;}
-        
-    .predrecovered{color: #17a2b8;}
-	
-	a{
-		text-decoration: none;
-		color: #007bff;
-	}
-
+  	*{
+  	margin: 0;
+  	padding: 0;
+  	box-sizing: border-box;
+  	font-family: sans-serif;
+  	}
+  	
+  	html{
+  	font-size: 100%;
+  	}
+  	
+  	.container{
+  		width: 100%;
+  	}
+  	
+  	.chart{
+  	margin-bottom: 1rem;
+  	}
+  	
+  	h1{
+  	margin: 1rem auto;
+  	}
+  	
+  	.p{
+  	margin: 0 2rem 2rem;
+  	font-size: .7rem;
+  	display: flex;
+  	justify-content: space-between;
+  	}
+  	
+  	.pred1{color: #28a745;}
+  	
+  	.pred2{color: #007bff;}
+  	
+  	.preddead{color: #dc3545;}
+  	
+  	.predrecovered{color: #17a2b8;}
+  	
+  	a{
+  	text-decoration: none;
+  	color: #007bff;
+  	}
+  	
   	.download{
-  		padding: 10px;
-  		width: 50%;
-  		margin: auto;
-  		text-align: center;
-  		color: white;
-  		background: #007bff;
-  		box-sizing: border-box;
-  		border-radius: 5px;
-  		font-family: sans-serif;
+  	padding: 10px;
+  	width: 50%;
+  	margin: auto;
+  	text-align: center;
+  	color: white;
+  	background: #007bff;
+  	box-sizing: border-box;
+  	border-radius: 5px;
+  	font-family: sans-serif;
   	}
   	
   	form{
-  		margin-bottom: 2rem;
-		display: flex;
-		flex-direction: column;
+  	margin-bottom: 2rem;
+  	display: flex;
+  	flex-direction: column;
   	}
   	
   	.number{
-  		padding: 8px;
-  		border: 1px solid #bbb;
-  		border-radius: 6px;
-  		margin-bottom: .5rem;
+  	padding: 8px;
+  	border: 1px solid #bbb;
+  	border-radius: 6px;
+  	margin-bottom: .5rem;
   	}
   	
-	.btn{
-		padding: 10px;
-  		text-align: center;
-  		color: white;
-  		background: #007bff;
-  		border-radius: 5px;
-  		font-family: sans-serif;
-  		margin-bottom: .5rem;
-	}
-	
-	.globalp{
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: .9rem;
-		margin-bottom: 2rem;
-	}
-	
-	footer{
-		background: #111 ;
-		color: #ddd;
-		padding: 1rem;
-		display: flex;
-		flex-direction: column;
-	}
-	
-		footer h1{
-			margin: 1rem 0;
-			font-size: 1.5rem;
-		}
-		
-		footer p{
-			font-size: .8rem;
-			line-height: 1.2rem;
-		}
-		
-		.contacto {
-			display: flex;
-			padding: .5rem;
-			height: 3rem;
-		}
-		
-		.contacto i {
-			font-size: 1.5rem;
-			color: #6c757d;
-			margin-right: 2rem;
-		}
-		
-		.contacto i:hover{
-			color: white;
-			font-size: 1.7rem;
-		}
-		
-		footer h3{
-			font-size: .5rem;
-			color: #6c757d;
-			align-self: center;
-			margin: 1rem 0 0 0;
-		}
-
-	@media only screen and (min-width: 720px) {
-		p{
-			font-size: .9rem;
-		}
-		
-		.p div{
-			width: 12rem;
-		}
-	}
+  	.btn{
+  	padding: 10px;
+  	text-align: center;
+  	color: white;
+  	background: #007bff;
+  	border-radius: 5px;
+  	font-family: sans-serif;
+  	margin-bottom: .5rem;
+  	}
+  	
+  	.globalp{
+  	display: flex;
+  	align-items: center;
+  	justify-content: center;
+  	font-size: .9rem;
+  	margin-bottom: 2rem;
+  	}
+  	
+  	footer{
+  	background: #111 ;
+  	color: #ddd;
+  	padding: 1rem;
+  	display: flex;
+  	flex-direction: column;
+  	}
+  	
+  	footer h1{
+  	margin: 1rem 0;
+  	font-size: 1.5rem;
+  	}
+  	
+  	footer p{
+  	font-size: .8rem;
+  	line-height: 1.2rem;
+  	}
+  	
+  	.contacto {
+  	display: flex;
+  	padding: .5rem;
+  	height: 3rem;
+  	}
+  	
+  	.contacto i {
+  	font-size: 1.5rem;
+  	color: #6c757d;
+  	margin-right: 2rem;
+  	}
+  	
+  	.contacto i:hover{
+  	color: white;
+  	font-size: 1.7rem;
+  	}
+  	
+  	footer h3{
+  	font-size: .5rem;
+  	color: #6c757d;
+  	align-self: center;
+  	margin: 1rem 0 0 0;
+  	}
+  	
+  	@media (min-width: 720px){
+  	p{
+  	font-size: 1rem;
+  	}
+  	
+  	footer{
+  	padding: 3rem;
+  	display: flex;
+  	flex-direction: column;
+  	}
+  	
+  	.contacto{
+  	height: 7rem;
+  	}
+  	
+  	.contacto i{
+  	font-size: 3.5rem;
+  	margin: 2rem;
+  	}
+  	
+  	footer h3{
+  	margin-bottom: -2rem;
+  	align-self: center;
+  	}
+  	}
   </style>
 </head>
 
 <body>
 <h1>COVID-19 en Perú</h1>
+<div class="container">
 <div>
 	<canvas class="chart" id="myChart" width="400" height="400"></canvas>
 </div>
@@ -152,25 +178,32 @@
         <p>Nuevos infectados: <span class="pred1" id="nuevosa"></span></p>
     </div>
     <div>
-        <p class="right">Predicciones para abril 3:</p>
-		<p class="right">Nuevos infectados: <span class="pred1" id="nuevos"></span></p>
-		<p class="right">Total infectados: <span class="pred2" id="total"></span></p>
+        <p>Predicciones para abril 3:</p>
+		<p>Nuevos infectados: <span class="pred1" id="nuevos"></span></p>
+		<p>Total infectados: <span class="pred2" id="total"></span></p>
     </div>
 </div>
 <form name="form">
 	<a class="download" download="covid19-infected-chart-peru" id="descargar">Guardar gráfico</a>
 </form>
+</div>
+<div class="container">
 <div>
 	<canvas class="chart" id="deathChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
-    <div>
+	<div>
 	    <p>Total fallecidos: <span class="preddead" id="deada"></span></p>
-    </div>
+	</div>
+	<div>
+		<p>Tasa de mortalidad: <span class="preddead" id="tasam"></span>%</p>
+	</div>
 </div>
 <form name="form">
 	<a class="download" download="covid19-dead-chart-peru" id="descargar1">Guardar gráfico</a>
 </form>
+</div>
+<div class="container">
 <div>
 	<canvas class="chart" id="recoveredChart" width="400" height="400"></canvas>
 </div>
@@ -178,21 +211,27 @@
     <div>
 	    <p>Total recuperados: <span class="predrecovered" id="recovereda"></span></p>
     </div>
+    <div>
+    	<p>Tasa de recuperación: <span class="predrecovered" id="tasar"></span>%</p>
+    </div>
 </div>
 <form name="form">
 	<a class="download" download="covid19-recovered-chart-peru" id="descargar2">Guardar gráfico</a>
 </form>
+</div>
+<div class="container">
 <div>
 	<canvas class="chart" id="regionesChart" width="480" height="720"></canvas>
 </div>
 <div class="p">
     <div>
-	    <p>*En Lima se encuentra la mayor cantidad de infectados (1059 hasta la fecha), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos.</p>
+	    <p>*En Lima se encuentra la mayor cantidad de infectados (1059 hasta la fecha), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos. Por eso no ha sido incluida en él.</p>
     </div>
 </div>
 <form name="form">
 	<a class="download" download="covid19-por-departamento-chart-peru" id="descargar3">Guardar gráfico</a>
 </form>
+</div>
 <div class="globalp">
 	<p>Gráficos basados en datos del <a href="https://www.gob.pe/minsa/" target="_blank">MINSA</a></p>
 </div>	
@@ -215,7 +254,7 @@
 	</div>
 	<h3>Zodiacwebdevelopment 2020</h3>
 </footer>
-	<script src="chart/Chart.min.js"></script>
+	<script src="../../Web Development/frameworks/Chart.min.js"></script>
 	<script type="text/javascript">
          function diferencia(array){
 		 	let nuevos = []
@@ -226,6 +265,13 @@
 		 		else nuevos.push(array[i]);
 		 	}
 		 	return nuevos;
+		 }
+		 
+		 function tasa(array){
+		 	let ratio = 0;
+		 	let num = array[array.length-1]/infected[infected.length-1];
+		 	ratio = num * 100;
+		 	return ratio;
 		 }
 		 
 		 function getRandomColor(array) {
@@ -328,7 +374,7 @@
 
 		 var infected    = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635, 671, 852, 950, 1065, 1323, 1414],
 		     recuperados = [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,4,4,14,16,16,16,269,394,447,537],
-		     dead        = [0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,5,5,5,7,9,9,11,16,18,24,30,47,55],
+		     dead        = [0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,5,5,5,7,9,9,11,16,18,24,30,47,47],
 		     regiones    = [//{nombre: "Lima", casos:1059 },
 		     				{nombre: "Loreto", casos:72},
 		     				{nombre: "Callao", casos:40 },
@@ -565,6 +611,8 @@
         recovereda.innerHTML = recuperados[recuperados.length-1];
         totala.innerHTML     = infected[infected.length-1];
         nuevosa.innerHTML    = diferencia(infected)[infected.length-1];
+        tasar.innerHTML      = tasa(recuperados).toFixed(2);
+        tasam.innerHTML      = tasa(dead).toFixed(2);
 	</script>
 </body>
 </html>
