@@ -225,7 +225,7 @@
 </div>
 <div class="p">
     <div>
-	    <p>*En Lima se encuentra la mayor cantidad de infectados (1059 hasta la fecha), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos. Por eso no ha sido incluida en él.</p>
+	    <p>*En Lima se encuentra la mayor cantidad de infectados (<span id="lima">1179</span> hasta la fecha), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos. Por eso no ha sido incluida en él.</p>
     </div>
 </div>
 <form name="form">
@@ -582,6 +582,7 @@
         nuevosa.innerHTML    = infected[infected.length-1];
         tasar.innerHTML      = tasa(recuperados).toFixed(2);
         tasam.innerHTML      = tasa(acumular(dead)).toFixed(2);
-	</script>
+	
+</script>
 </body>
 </html>
