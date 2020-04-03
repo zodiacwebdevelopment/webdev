@@ -256,48 +256,21 @@
 </footer>
 	<script src="chart/Chart.min.js"></script>
 	<script type="text/javascript">
-         function diferencia(array){
-		 	let nuevos = []
+         function acumular(array){
+		 	let nuevos = [];
+		 	let cumulo = 0;
 		 	for(let i=0; i<array.length; i++){
-		 		if(array[i-1]){
-		 			nuevos.push(array[i]-array[i-1]);
-		 		}
-		 		else nuevos.push(array[i]);
+		 		cumulo += array[i];
+				nuevos.push(cumulo);
 		 	}
 		 	return nuevos;
 		 }
 		 
 		 function tasa(array){
 		 	let ratio = 0;
-		 	let num = array[array.length-1]/infected[infected.length-1];
+		 	let num = array[array.length-1]/acumular(infected)[infected.length-1];
 		 	ratio = num * 100;
 		 	return ratio;
-		 }
-		 
-		 function getRandomColor(array) {
-			 var num=(Math.floor(Math.random()*4)*4).toString(16);
-			 var letters = ['0','F',num];
-			 var color = '#';
-			 
-			 for (var i = 0; i < 3; i++ ) {
-				 let pos=Math.floor(Math.random() * letters.length);
-				 color += letters[pos];
-				 letters.splice(pos,1);
-			 }
-			 
-			 //para evitar que se repitan colores 
-			 if(array.includes(color))
-			 return getRandomColor(array);
-			 else
-			 array.push(color)
-		 }
-		 
-		 function crearColores(len){
-		 	let colors = [];
-		 	for(i=0; i<len; i++){
-		 		getRandomColor(colors);
-		 	}
-		 	return colors;
 		 }
 		 
 		 function ordenarRegiones(){
@@ -319,10 +292,13 @@
 		 	ancla.setAttribute("href", canvasurl);
 		 }
 		 
-		 function crearDias(len){
+		 function crearDias(len,a){
 		 	let dias = [];
-		 	for(let i=0; i<len; i++){
-		 		dias[i] = i+1;
+		 	if(!a){
+		 		a = 0;
+		 	}
+		 	for(let i=a; i<len; i++){
+		 		dias.push(i+1);
 		 	}
 		 	return dias;
 		 }
@@ -372,29 +348,30 @@
 			 return a*Math.pow(Math.E,b*futuro);
 		 }
 
-		 var infected    = [1 , 6 , 7 , 9 , 11 , 17 , 22 , 38 , 46 , 71 , 86 , 117 , 145 , 234 , 263 , 318 , 363 , 395 , 416, 480 , 580 , 635, 671, 852, 950, 1065, 1323, 1414],
-		     recuperados = [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,4,4,14,16,16,16,269,394,447,537],
-		     dead        = [0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,5,5,5,7,9,9,11,16,18,24,30,47,55],
-		     regiones    = [//{nombre: "Lima", casos:1059 },
-		     				{nombre: "Loreto", casos:72},
-		     				{nombre: "Callao", casos:40 },
-		     				{nombre: "Lambayeque", casos:37 },
+		 var infected    = [1,5,2,3,1,8,8,11,19,28,20,29,58,63,57,31,39,33,64,101,54,35,138,143,115,254,95,180],
+		     recuperados = [1,1,1,1,1,1,1,1,1,4,4,14,16,16,16,269,394,447,537],
+		     dead        = [3,1,1,0,1,3,0,5,4,2,9,10,12,5,5],
+		     regiones    = [//{nombre: "Lima", casos:1179 },
+		     				{nombre: "Loreto", casos:84},
+		     				{nombre: "Callao", casos:59 },
+		     				{nombre: "Lambayeque", casos:35 },
 		     				{nombre: "Piura", casos:27 },
-		     				{nombre: "Cusco", casos:38 },
-		     				{nombre: "Arequipa", casos:30 },
-		     				{nombre: "Junín", casos:17 },
-		     				{nombre: "La Libertad", casos:34 },
-		     				{nombre: "Tumbes", casos:15},
-		     				{nombre: "Ancash", casos:15 },
+		     				{nombre: "Cusco", casos:44 },
+		     				{nombre: "Arequipa", casos:37 },
+		     				{nombre: "Junín", casos:19 },
+		     				{nombre: "La Libertad", casos:44 },
+		     				{nombre: "Tumbes", casos:16},
+		     				{nombre: "Ancash", casos:18 },
 		     				{nombre: "Ica", casos:8 },
 		     				{nombre: "Huánuco", casos:6 },
 		     				{nombre: "San Martín", casos:6 },
 		     				{nombre: "Ayacucho", casos:1 },
-		     				{nombre: "Cajamarca", casos:3},
-		     				{nombre: "Madre de Dios", casos:1 },
+		     				{nombre: "Cajamarca", casos:4},
+		     				{nombre: "Madre de Dios", casos:2 },
 		     				{nombre: "Tacna", casos:3 },
 		     				{nombre: "Huancavelica", casos:1 },
-		     				{nombre: "Pasco", casos:1 }],     
+		     				{nombre: "Pasco", casos:1 },
+		     				{nombre: "Apurimac", casos: 1 }],     
 		     labels      = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28','marzo 29','marzo 30','marzo 31','abril 1'];
 			 
 		 Chart.plugins.register({
@@ -410,14 +387,6 @@
 		       ctx2 = document.getElementById('deathChart').getContext('2d'),
 		       ctx3 = document.getElementById('recoveredChart').getContext('2d'),
 		       ctx4 = document.getElementById('regionesChart').getContext('2d');
-		 	
-		 /*Chart.plugins.register({
-		 beforeDraw: function(chartInstance) {
-		 var ctx = chartInstance.chart.ctx;
-		 ctx.fillStyle = "#ffffff";
-		 ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
-		 }
-		 });*/
 		 
 		 var myChart = new Chart(ctx, { 
 		 	type: 'line', 
@@ -425,7 +394,7 @@
 			 	labels: crearDias(infected.length), 
 			 	datasets: [{ 
 			 		label: 'Total de casos', 
-					data: infected,
+					data: acumular(infected),
 			 		fill: false,
 			 		lineTension: 0,
 			 		backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ], 
@@ -434,7 +403,7 @@
 			 		pointRadius: 2
 			 		 },{
 			 		label: 'Nuevos casos',
-			 		data: diferencia(infected),
+			 		data: infected,
 			 		fill: false,
 			 		lineTension: 0,
 			 		borderWidth: 2,
@@ -466,9 +435,9 @@
 		var deathChart = new Chart(ctx2, {
 			type: "line",
 			data: {
-				labels: crearDias(infected.length),
+				labels: crearDias(infected.length,13),
 				datasets: [{
-					data: dead,
+					data: acumular(dead),
 					fill: false,
 					lineTension: 0,
 					borderColor: '#dc3545', 
@@ -502,7 +471,7 @@
 		var recoveredChart = new Chart(ctx3, {
 			type: 'line',
 			data: {
-				labels: crearDias(infected.length),
+				labels: crearDias(infected.length, 9),
 				datasets: [{
 					data: recuperados,
 					fill: false,
@@ -542,7 +511,7 @@
 			labels: ordenarRegiones().y,
 			datasets:[{
 				data: ordenarRegiones().x,
-				backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)' ]
+				backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)' ]
 				//backgroundColor: crearColores(regiones.length)
 			}]
 			},
@@ -605,14 +574,14 @@
         const total  = document.getElementById("total"),
               nuevos = document.getElementById("nuevos");
 
-		total.innerHTML      = Math.round(infected[infected.length-1]+regresionExponencial(diferencia(infected),infected.length));
-		nuevos.innerHTML     = Math.round(regresionExponencial(diferencia(infected),infected.length));
-        deada.innerHTML      = dead[dead.length - 1];
+		total.innerHTML      = Math.round(acumular(infected)[infected.length-1]+regresionLineal(infected,infected.length));
+		nuevos.innerHTML     = Math.round(regresionLineal(infected,infected.length));
+        deada.innerHTML      = acumular(dead)[dead.length - 1];
         recovereda.innerHTML = recuperados[recuperados.length-1];
-        totala.innerHTML     = infected[infected.length-1];
-        nuevosa.innerHTML    = diferencia(infected)[infected.length-1];
+        totala.innerHTML     = acumular(infected)[infected.length-1];
+        nuevosa.innerHTML    = infected[infected.length-1];
         tasar.innerHTML      = tasa(recuperados).toFixed(2);
-        tasam.innerHTML      = tasa(dead).toFixed(2);
+        tasam.innerHTML      = tasa(acumular(dead)).toFixed(2);
 	</script>
 </body>
 </html>
