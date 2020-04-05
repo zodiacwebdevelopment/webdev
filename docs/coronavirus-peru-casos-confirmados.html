@@ -234,7 +234,7 @@
 	    <p>Total fallecidos: <span class="preddead" id="deada"></span></p>
 	</div>
 	<div class="right">
-		<p>Tasa de mortalidad: <span class="preddead" id="tasam"></span>%</p>
+		<p>Tasa de letalidad: <span class="preddead" id="tasam"></span>%</p>
 	</div>
 </div>
 <form name="form">
@@ -565,9 +565,9 @@
 		var recoveredChart = new Chart(ctx3, {
 			type: 'line',
 			data: {
-				labels: crearDias(data.recuperados.length, 9),
+				labels: crearDias(data.recuperados.length+9, 9),
 				datasets: [{
-					data: data.recuperados.slice(9),
+					data: data.recuperados,
 					fill: false,
 					lineTension: 0,
 					borderColor: '#17a2b8', 
