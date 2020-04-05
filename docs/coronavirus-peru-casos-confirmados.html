@@ -5,7 +5,7 @@
   <title>COVID-19 en Perú</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="">
-  <link rel="shortcut icon" href="favicons/coronavirushd.ico">
+  <link rel="shortcut icon" href="../../Web Development/favicons/coronavirushd.ico">
   <link rel="stylesheet" href="font-awesome/css/all.css">
   <!--<link rel="stylesheet" href="infected.css">-->
   <style type="text/css">
@@ -119,6 +119,14 @@
   	height: 3rem;
   	}
   	
+  	.right{
+  	text-align: right;
+  	}
+  	
+  	.center{
+  		text-align: center;
+  	}
+  	
   	.contacto i {
   	font-size: 1.5rem;
   	color: #6c757d;
@@ -138,14 +146,44 @@
   	}
   	
   	@media (min-width: 720px){
+  	body{
+  		background: #ffc107;
+  		display: flex;
+  		flex-direction: column;
+  		align-items: center;
+  		justify-content: space-between;
+  	}
+  	
   	p{
-  	font-size: 1rem;
+  	
+  	}
+  	
+  	form{
+  		margin: 0;
   	}
   	
   	footer{
   	padding: 3rem;
   	display: flex;
   	flex-direction: column;
+  	}
+  	
+  	.container{
+  		width: 80%;
+  		background: white;
+  		font-size: 24px;
+  		padding: 20px;
+  		border-radius: 10px;
+  		margin: 10px 0;
+  		box-shadow: 0 0 20px 0 rgba(0,0,0,0.2);
+  	}
+  	
+  	.p div p{
+  		font-size: .8rem;
+  	}
+  	
+  	.btn {
+  		margin: 0;
   	}
   	
   	.contacto{
@@ -168,17 +206,17 @@
 <body>
 <h1>COVID-19 en Perú</h1>
 <div class="container">
-<div>
-	<canvas class="chart" id="myChart" width="400" height="400"></canvas>
+<div class="chart">
+	<canvas id="myChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
     <div>
-	    <p>Abril 3 (día 29):</p>
+	    <p>Abril 2 (día 28):</p>
 	    <p>Total infectados: <span class="pred2" id="totala"></span></p>
         <p>Nuevos infectados: <span class="pred1" id="nuevosa"></span></p>
     </div>
-    <div>
-        <p>Predicciones para abril 4:</p>
+    <div class="right">
+        <p>Predicciones para abril 3:</p>
 		<p>Nuevos infectados: <span class="pred1" id="nuevos"></span></p>
 		<p>Total infectados: <span class="pred2" id="total"></span></p>
     </div>
@@ -188,15 +226,15 @@
 </form>
 </div>
 <div class="container">
-<div>
-	<canvas class="chart" id="deathChart" width="400" height="400"></canvas>
+<div class="chart">
+	<canvas id="deathChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
 	<div>
 	    <p>Total fallecidos: <span class="preddead" id="deada"></span></p>
 	</div>
-	<div>
-		<p>Tasa de letalidad: <span class="preddead" id="tasam"></span>%</p>
+	<div class="right">
+		<p>Tasa de mortalidad: <span class="preddead" id="tasam"></span>%</p>
 	</div>
 </div>
 <form name="form">
@@ -204,14 +242,14 @@
 </form>
 </div>
 <div class="container">
-<div>
-	<canvas class="chart" id="recoveredChart" width="400" height="400"></canvas>
+<div class="chart">
+	<canvas id="recoveredChart" width="400" height="400"></canvas>
 </div>
 <div class="p">
     <div>
 	    <p>Total recuperados: <span class="predrecovered" id="recovereda"></span></p>
     </div>
-    <div>
+    <div class="right">
     	<p>Tasa de recuperación: <span class="predrecovered" id="tasar"></span>%</p>
     </div>
 </div>
@@ -224,8 +262,8 @@
 	<canvas class="chart" id="regionesChart" width="480" height="720"></canvas>
 </div>
 <div class="p">
-    <div>
-	    <p>*En Lima se encuentra la mayor cantidad de infectados (<span id="lima">1257</span> hasta la fecha), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos. Por eso no ha sido incluida en él.</p>
+    <div class="center">
+	    <p>*En <span id="mayorCasos"></span> se encuentra la mayor cantidad de infectados (<span id="lima"></span> hasta la fecha), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos. Por eso no ha sido incluida en él.</p>
     </div>
 </div>
 <form name="form">
@@ -255,7 +293,56 @@
 	<h3>Zodiacwebdevelopment 2020</h3>
 </footer>
 	<script src="chart/Chart.min.js"></script>
-	<script type="text/javascript">
+	<script>
+         async function getData(){
+         	function Departamento(nombre, casos){
+         	this.nombre = nombre;
+         	this.casos = casos;
+         	}
+         	
+         	let infected = [];
+         	let dead = [];
+         	let recuperados = [];
+         	let departamentos = [];
+         	const response = await fetch('csv/confirmados.csv');
+         	const regiones = await fetch('csv/departamentos.csv');
+         	const data = await response.text();
+         	const dep = await regiones.text();
+         	const table = data.split('\n').slice(1);
+         	const deprow = dep.split('\n');
+         	table.forEach(element => {
+         		if(element){
+         		const col = element.split(',');
+         		const val = col[1];
+         		const d = col[2];
+         		const r = col[3]*1;
+         		if(val){
+         		infected.push(parseInt(val));
+         		}
+         		dead.push(parseInt(d));
+         		if(r){
+         		recuperados.push(parseInt(r));
+         		}
+         		}
+         	});
+         	deprow.forEach(item => {
+         		if(item){
+         		const depcols = item.split(',');
+         		const names = depcols[0];
+         		const cases = depcols[depcols.length-1];
+       
+         		departamentos.push(new Departamento(names, parseInt(cases)));
+         		}
+
+         	});
+ 
+         	return {infected, dead, recuperados, departamentos};
+         }
+        
+
+
+    
+         
          function acumular(array){
 		 	let nuevos = [];
 		 	let cumulo = 0;
@@ -266,14 +353,14 @@
 		 	return nuevos;
 		 }
 		 
-		 function tasa(array){
+		 function tasa(array,infect){
 		 	let ratio = 0;
-		 	let num = array[array.length-1]/acumular(infected)[infected.length-1];
+		 	let num = array[array.length-1]/acumular(infect)[infect.length-1];
 		 	ratio = num * 100;
 		 	return ratio;
 		 }
 		 
-		 function ordenarRegiones(){
+		 function ordenarRegiones(regiones){
 		 	let nombre = [];
 		 	let casos = [];
 		 	regiones.sort(function(prev, next){
@@ -348,31 +435,33 @@
 			 return a*Math.pow(Math.E,b*futuro);
 		 }
 
-		 var infected    = [1,5,2,3,1,8,8,11,19,28,20,29,58,63,57,31,39,33,64,100,54,35,138,143,115,254,95,180,152],
-		     recuperados = [1,1,1,1,1,1,1,1,1,4,4,14,16,16,16,269,394,447,537,914],
-		     dead        = [3,1,1,0,1,3,0,5,4,2,9,11,14,5,6,7,1],
-		     regiones    = [//{nombre: "Lima", casos:1257},
-		     				{nombre: "Loreto", casos:106},
-		     				{nombre: "Callao", casos:64},
-		     				{nombre: "Lambayeque", casos:55 },
-		     				{nombre: "Piura", casos:27},
-		     				{nombre: "Cusco", casos:48 },
-		     				{nombre: "Arequipa", casos:37},
-		     				{nombre: "Junín", casos:25 },
-		     				{nombre: "La Libertad", casos:50},
-		     				{nombre: "Tumbes", casos:20},
+		/* var infected    = [], //[1,5,2,3,1,8,8,11,19,28,20,29,58,63,57,31,39,33,64,101,54,35,138,143,115,254,95,180],
+		  var recuperados = [1,1,1,1,1,1,1,1,1,4,4,14,16,16,16,269,394,447,537];
+		     //dead        = [], //[3,1,1,0,1,3,0,5,4,2,9,10,12,5,5],
+		     var regiones = [//{nombre: "Lima", casos:1179 },
+		     				{nombre: "Loreto", casos:84},
+		     				{nombre: "Callao", casos:59 },
+		     				{nombre: "Lambayeque", casos:35 },
+		     				{nombre: "Piura", casos:27 },
+		     				{nombre: "Cusco", casos:44 },
+		     				{nombre: "Arequipa", casos:37 },
+		     				{nombre: "Junín", casos:19 },
+		     				{nombre: "La Libertad", casos:44 },
+		     				{nombre: "Tumbes", casos:16},
 		     				{nombre: "Ancash", casos:18 },
-		     				{nombre: "Ica", casos:9},
+		     				{nombre: "Ica", casos:8 },
 		     				{nombre: "Huánuco", casos:6 },
-		     				{nombre: "San Martín", casos:8 },
+		     				{nombre: "San Martín", casos:6 },
 		     				{nombre: "Ayacucho", casos:1 },
-		     				{nombre: "Cajamarca", casos:6},
+		     				{nombre: "Cajamarca", casos:4},
 		     				{nombre: "Madre de Dios", casos:2 },
 		     				{nombre: "Tacna", casos:3 },
 		     				{nombre: "Huancavelica", casos:1 },
-		     				{nombre: "Pasco", casos:2 },
-		     				{nombre: "Apurimac", casos: 1 }],     
-		     labels      = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28','marzo 29','marzo 30','marzo 31','abril 1'];
+		     				{nombre: "Pasco", casos:1 },
+		     				{nombre: "Apurimac", casos: 1 }]; 
+		     var labels = ['marzo 6','marzo 7','marzo 8','marzo 9','marzo 10','marzo 11','marzo 12','marzo 13','marzo 14','marzo 15','marzo 16','marzo 17','marzo 18','marzo 19','marzo 20','marzo 21','marzo 22', 'marzo 23', 'marzo 24','marzo 25','marzo 26','marzo 27','marzo 28','marzo 29','marzo 30','marzo 31','abril 1'];
+			 */
+			 
 			 
 		 Chart.plugins.register({
 			 beforeDraw: function(chartInstance) {
@@ -388,13 +477,17 @@
 		       ctx3 = document.getElementById('recoveredChart').getContext('2d'),
 		       ctx4 = document.getElementById('regionesChart').getContext('2d');
 		 
+		 chartIt()
+		 
+		 async function chartIt(){
+		 const data = await getData();
 		 var myChart = new Chart(ctx, { 
 		 	type: 'line', 
 			 data: { 
-			 	labels: crearDias(infected.length), 
+			 	labels: crearDias(data.infected.length), 
 			 	datasets: [{ 
 			 		label: 'Total de casos', 
-					data: acumular(infected),
+					data: acumular(data.infected),
 			 		fill: false,
 			 		lineTension: 0,
 			 		backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ], 
@@ -403,7 +496,7 @@
 			 		pointRadius: 2
 			 		 },{
 			 		label: 'Nuevos casos',
-			 		data: infected,
+			 		data: data.infected,
 			 		fill: false,
 			 		lineTension: 0,
 			 		borderWidth: 2,
@@ -435,9 +528,9 @@
 		var deathChart = new Chart(ctx2, {
 			type: "line",
 			data: {
-				labels: crearDias(infected.length+1,13),
+				labels: crearDias(data.dead.length,13),
 				datasets: [{
-					data: acumular(dead),
+					data: acumular(data.dead.slice(13)),
 					fill: false,
 					lineTension: 0,
 					borderColor: '#dc3545', 
@@ -468,12 +561,13 @@
 			}
 		});
 		
+		
 		var recoveredChart = new Chart(ctx3, {
 			type: 'line',
 			data: {
-				labels: crearDias(infected.length, 9),
+				labels: crearDias(data.recuperados.length, 9),
 				datasets: [{
-					data: recuperados,
+					data: data.recuperados.slice(9),
 					fill: false,
 					lineTension: 0,
 					borderColor: '#17a2b8', 
@@ -508,9 +602,9 @@
 		var regionesChart = new Chart(ctx4, {
 			type: "horizontalBar",
 			data:{
-			labels: ordenarRegiones().y,
+			labels: ordenarRegiones(data.departamentos).y.slice(1),
 			datasets:[{
-				data: ordenarRegiones().x,
+				data: ordenarRegiones(data.departamentos).x.slice(1),
 				backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)' ]
 				//backgroundColor: crearColores(regiones.length)
 			}]
@@ -548,6 +642,7 @@
 				}
 			}
 		});
+		}
 		
 		const a = document.getElementById("descargar"),
 		      b = document.getElementById("descargar1"),
@@ -570,19 +665,24 @@
 			let canvasurl = document.getElementById("regionesChart").toDataURL("image/jpeg", 1.0);
 			d.setAttribute("href", canvasurl);
 		});
-
+	/*
         const total  = document.getElementById("total"),
               nuevos = document.getElementById("nuevos");
-
-		total.innerHTML      = Math.round(acumular(infected)[infected.length-1]+regresionLineal(infected,infected.length));
-		nuevos.innerHTML     = Math.round(regresionLineal(infected,infected.length));
-        deada.innerHTML      = acumular(dead)[dead.length - 1];
-        recovereda.innerHTML = recuperados[recuperados.length-1];
-        totala.innerHTML     = acumular(infected)[infected.length-1];
-        nuevosa.innerHTML    = infected[infected.length-1];
-        tasar.innerHTML      = tasa(recuperados).toFixed(2);
-        tasam.innerHTML      = tasa(acumular(dead)).toFixed(2);
-	
-</script>
+*/
+	writeIt();
+	async function writeIt(){
+		const info = await getData();
+		total.innerHTML      = Math.round(acumular(info.infected)[info.infected.length-1]+regresionLineal(info.infected,info.infected.length));
+		nuevos.innerHTML     = Math.round(regresionLineal(info.infected,info.infected.length));
+        deada.innerHTML      = acumular(info.dead)[info.dead.length - 1];
+        recovereda.innerHTML = info.recuperados[info.recuperados.length-1];
+        totala.innerHTML     = acumular(info.infected)[info.infected.length-1];
+        nuevosa.innerHTML    = info.infected[info.infected.length-1];
+        tasar.innerHTML      = tasa(info.recuperados,info.infected).toFixed(2);
+        tasam.innerHTML      = tasa(acumular(info.dead),info.infected).toFixed(2);
+		mayorCasos.innerHTML = info.departamentos[0].nombre;
+		lima.innerHTML = info.departamentos[0].casos;
+	}
+	</script>
 </body>
 </html>
