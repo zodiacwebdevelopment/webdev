@@ -211,12 +211,12 @@
 </div>
 <div class="p">
     <div>
-	    <p>Abril 2 (día 28):</p>
+	    <p>Abril 4 (día <span id="hoydia"></span>):</p>
 	    <p>Total infectados: <span class="pred2" id="totala"></span></p>
         <p>Nuevos infectados: <span class="pred1" id="nuevosa"></span></p>
     </div>
     <div class="right">
-        <p>Predicciones para abril 3:</p>
+        <p>Predicciones para abril 5:</p>
 		<p>Nuevos infectados: <span class="pred1" id="nuevos"></span></p>
 		<p>Total infectados: <span class="pred2" id="total"></span></p>
     </div>
@@ -684,8 +684,10 @@ labelString: 'Días desde el primer contagio'
         nuevosa.innerHTML    = info.infected[info.infected.length-1];
         tasar.innerHTML      = tasa(info.recuperados,info.infected).toFixed(2);
         tasam.innerHTML      = tasa(acumular(info.dead),info.infected).toFixed(2);
-		mayorCasos.innerHTML = info.departamentos[0].nombre;
-		lima.innerHTML = info.departamentos[0].casos;
+	hoydia.innerHTML = info.infected.length;	
+mayorCasos.innerHTML = ordenarRegiones(info.departamentos).y[0];
+		
+lima.innerHTML = ordenarRegiones(info.departamentos).x[0];
 	}
 	</script>
 </body>
