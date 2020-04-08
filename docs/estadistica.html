@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Estadística para secundaria</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="">
+  <link rel="shortcut icon" href="">
+  <link rel="stylesheet" href="css/estadistica.css">
+  <script type="text/javascript" src="js/Chart.min.js"></script>
+</head>
+<body>
+	<div class="box">
+		<form name="type">
+		<select id="selectType">
+			<option value="bar">Barras</option>
+			<option value="line">Línea</option>
+		</select>
+		</form>
+		<div>
+			<canvas id="canvasExample" width="400" height="400"></canvas>
+		</div>
+		<form name="form">
+			<div>
+				<label for="x">Agregar etiqueta:</label>
+				<input name="x">
+				<label for="y">Agregar Valor:</label>
+				<input name="y">
+				<div class="btn" id="addD">Agregar dato</div>
+				<label for="selectColor">Cambiar color</label>
+				<select name="selectColor">
+					<option value="rgba(0, 123, 255,">Azul</option>
+					<option value="rgba(255, 193, 7,">Amarillo</option>
+					<option value="rgba(220, 53, 69,">Rojo</option>
+					<option value="rgba(40, 167, 69,">Verde</option>
+					<option value="rgba(111, 66, 193,">Morado</option>
+					<option value="rgba(23, 162, 184,">Celeste</option>
+					<option value="rgba(32, 201, 151,">Turquesa</option>
+					<option value="rgba(253, 126, 20,">Naranja</option>
+				</select>
+			</div>
+			<div>
+				<label for="titleVertical">Título vertical</label>
+				<input name="titleVertical">
+				<label for="titleHorizontal">Título horizontal</label>
+				<input name="titleHorizontal">
+				<label for="titleCanvas">Título del gráfico</label>
+				<input name="titleCanvas">
+				<div class="btn" id="addTitleXY">Cambiar título</div>
+			</div>
+		</form>
+		<a class="btn" id="download" href="" download="mi-gráfico">Guardar gráfico</a>
+	</div>
+	<script type="text/javascript" src="js/estadistica.js"></script>
+</body>
+</html>
