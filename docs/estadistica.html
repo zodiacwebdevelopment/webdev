@@ -5,16 +5,50 @@
   <title>Estadística para secundaria</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="">
-  <link rel="shortcut icon" href="favicons/barchartblack.ico">
+  <link rel="shortcut icon" href="">
+  <link rel="stylesheet" href="../font-awesome/css/all.css">
   <link rel="stylesheet" href="css/estadistica.css">
-  <script type="text/javascript" src="chart/Chart.min.js"></script>
+  <script type="text/javascript" src="js/Chart.min.js"></script>
 </head>
 <body>
+	<!--<div class="box">
+		<h1>¡Crea tu propio gráfico!</h1>
+		<h3>Es fácil y sencillo</h3>
+		<h2>Elige tu tipo de gráfico</h2>
+		<p>En la parte superior izquierda de la tarjeta del gráfico, tienes un menú desplegable para elegir el tipo de gráfico que quieras.
+		 Esta aplicación cuenta con cuatro tipos de gráficos:</p>
+		 <ul>
+		 	<li>Barras <i class="fas fa-chart-bar"></i></li>
+		 	<li>Líneas <i class="fas fa-chart-line"></i></li>
+		 	<li>Pastel <i class="fas fa-chart-pie"></i></li>
+		 	<li>Barras horizontales</li>
+		 </ul>
+		 <p>
+		 	¡Diviértete jugando con ellos!
+		 </p>
+		 <h2>Añade valores y datos</h2>
+		 <p>La idea de hacer un gráfico es representar de forma visual la información que queramos:
+		  nuestras calificaciones a lo largo del año escolar o los goles de nuestros jugadores favoritos.
+		   En la caja "Agregar etiqueta" es donde pondremos el nombre de cada dato, o sea, la parte horizontal del gráfico.
+		   Y en la caja "Agregar valor" es donde le daremos el valor a cada nombre, o sea, la parte vertical</p>
+		 <h2>Ponle nombre</h2>
+		 <p>No olvides añadirle un título. Este debe describir de qué trata tu gráfico.
+		  También es importante nombrar los ejes; así sabrás qué es lo que estás graficando.
+		   Tienes tres cajas en las que colocarás un título al eje vertical, al eje horizontal y a tu gráfico, respectivamente.</p>
+		   <h2>Colorea</h2>
+		   <p>Debajo del gráfico tienes un menú desplegable con el que podrás elegir el color de cada elemento de tu gráfico.
+		    Elige el que más te guste</p>
+		   <h2>Guarda tu gráfico</h2>
+		   <p>Si ya terminaste, no olvides guardarlo. Sólo debes presionar en "Guardar gráfico"
+		    y listo.</p>
+	</div>-->
 	<div class="box">
 		<form name="type">
 		<select id="selectType">
-			<option value="bar">Barras</option>
-			<option value="line">Línea</option>
+			<option value="bar">Gráfico de barras</option>
+			<option value="line">Gráfico lineal</option>
+			<option value="pie">Gráfico de pastel</option>
+			<option value="horizontalBar">Gráfico de barras horizontal</option>
 		</select>
 		</form>
 		<div>
@@ -23,14 +57,14 @@
 		<form name="form">
 			<div>
 				<label for="x">Agregar etiqueta:</label>
-				<input name="x">
+				<input name="x" placeholder="Usa las comas (,) para separar los nombres">
 				<label for="y">Agregar Valor:</label>
-				<input name="y">
+				<input name="y" placeholder="Usa las comas (,) para separar los nombres">
 				<div class="btn" id="addD">Agregar dato</div>
 				<label for="selectColor">Cambiar color</label>
 				<select name="selectColor">
-					<option value="rgba(0, 123, 255,">Azul</option>
 					<option value="rgba(255, 193, 7,">Amarillo</option>
+					<option value="rgba(0, 123, 255,">Azul</option>
 					<option value="rgba(220, 53, 69,">Rojo</option>
 					<option value="rgba(40, 167, 69,">Verde</option>
 					<option value="rgba(111, 66, 193,">Morado</option>
@@ -45,7 +79,7 @@
 				<label for="titleHorizontal">Título horizontal</label>
 				<input name="titleHorizontal">
 				<label for="titleCanvas">Título del gráfico</label>
-				<input name="titleCanvas">
+				<input name="titleCanvas" placeholder="Añade un título que describa a tu gráfico">
 				<div class="btn" id="addTitleXY">Cambiar título</div>
 			</div>
 		</form>
