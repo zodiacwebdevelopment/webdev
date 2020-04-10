@@ -17,6 +17,28 @@ a{
 	text-decoration: none;
 }
 
+ul{
+	list-style: none;
+	padding: 0 1rem;
+	line-height: 1.2rem;
+}
+
+ul li{
+	color: blue;
+}
+
+ul li i{
+	margin-left: 1rem;
+}
+
+h1,h2,h3,p {
+	margin: .5rem 0;
+}
+
+p{
+	line-height: 1.2rem;
+}
+
 form{
 	width: 100%;
 	display: flex;
