@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Datos agrupados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="">
+  <link rel="shortcut icon" href"">
+  <link rel="stylesheet" href="css/datosagrupados.css">
+  <script type="text/javascript" src="../frameworks/Chart.min.js"></script>
+</head>
+<body>
+	<div class="container title">
+		<h1>Tabla de frecuencias automática</h1>
+		<span>Sólo debes ingresar los datos</span>
+	</div>
+	<form class="container" name="form">
+		<div class="textarea">
+			<textarea name="datos" placeholder="Aquí debes ingresar los datos de tu muestra"></textarea>
+			<span id="cleanBtn" class="clean">&times;</span>
+		</div>
+		<input type="file" id="archivo" hidden="hidden">
+		<div id="btnInfo" class="order-2">Cómo se hace</div>
+		<div id="divInfo" class="info d-none">
+			<h1>Ingresar los datos</h1>
+			<p>Para ingresar los datos de tu muestra sólo debes escribirlos en el campo de arriba.
+			 Cada dato debe estar separado por comas, y si los datos son decimales (ejemplo: <span class="code">1,33</span>), reemplaza la coma decimal
+			 por un punto (ejemplo: <span class="code">1.33</span>). Ahora sólo debes dar click en el botón <a href="#btn" class="blue">Crear tabla</a> y 
+			 automáticamente se generará tu tabla de frecuencias.
+			 Puedes crear una tabla con los datos en Excel y guardarlas con la extensión <span class="code">.csv</span>.
+			 Este tipo de archivos separa los valores automáticamente por comas, así te ahorras el trabajo de escribirlos en el cuadro de arriba y sólo tendrías
+			 que subirlo dando click en el botón <a href="#btnFile" class="blue">Subir datos</a>. Recuerda que sólo son admitidos valores numéricos, cualquier otro símbolo (<span class="code">$</span>, <span class="code">%</span>, <span class="code">kg</span>, etc.) provocará un error en la aplicación.
+			</p>
+			<h1>Modificar número de clases</h1>
+			<p>
+			Por defecto, el número de clases <span class="code">k</span> se calcula de manera automática, mediante la regla de Sturges. La
+			 amplitud <span class="code">A</span> se redondea a la alta y con tantas cifras decimales como tengan los valores de la muestra.
+			Pero si ya tienes un número de clases asignado o quieres que la amplitud sea redondeada a valores enteros
+			puedes hacerlo llenando el formulario <a href="#btnInputs" class="blue">Modificar K y redondeo</a> y dar click al botón <a href="#btn" class="blue">Crear tabla</a> para actualizar.
+			 El primer campo cambia el número de clases;
+			el segundo, a cuántas cifras decimales debería redondearse la amplitud de clase. Para resondearlo a un
+			número entero el valor de dicho campo debe ser <span class="code">0</span>.
+			</p>
+			<h1>Medidas de tendencia central</h1>
+			<p>
+			Luego de generarse la tabla de frecuencias, se desplegará debajo de ella el botón
+			<a href="#showMTC" class="purple">Mostrar MTC</a>. Al darle click se mostrará la tabla con las medidas de tendencia central
+			correspondiente a los datos ingresados: Media, Mediana, Moda.
+			</p>
+			<h1>Histograma y otros gráficos</h1>
+			<p>
+			Al dar click en el botón <a href="#showCharts" class="purple">Mostrar gráficos</a> se dibujarán las tres gráficas más
+			importantes: Histograma, polígono de frecuencias y gráfica de ojiva. Puedes descargarlos
+			dando click en el botón <a href="#downloadA" class="purple">Descargar</a>. Si estás en un dispositivo móvil se recomienda rotar la
+			pantalla antes de descargar para mejorar la resolución del gráfico.
+			</p>
+			<a href="#btnInfo" id="scrollUp">↑</a>
+		</div>
+		<div id="btnFile" class="btn">Subir datos</div>
+		<div id="btn" class="btn order-1">Crear tabla</div>
+		<div id="btnInputs" class="order-2">Modificar K y redondeo</div>
+		<div id="inputs" class="d-none">	
+			<div class="divInput inputK">	
+				<input type="number" name="inputK" class="input" placeholder="Número de clases">
+			</div>
+			<div class="divInput inputA">
+				<input type="number" name="inputA" class="input" placeholder="Cifras decimales a redondear">				
+			</div>
+		</div>
+	</form>
+	<div class="container table canvas d-none">
+		<table id="table" class="freqTable"></table>
+	</div>
+	<div class="tables canvas d-none">
+		<div class="container table border-blue">
+			<table id="dispersionM" class="freqTable"></table>
+		</div>
+		<div class="explain"><p>N: total de tados &nbsp;&nbsp;&nbsp;&nbsp; K: Número de clases &nbsp;&nbsp;&nbsp;&nbsp; A: Amplitud de clase</p></div>
+		<div class="btn btn-purple" id="showMTC">Mostrar MTC</div>
+		<div id="trendingM" class="container border-purple table d-none">
+			<table id="MTC" class="freqTable"></table>
+		</div>
+		<div class="btn btn-purple" id="showCharts">Mostrar gráficos</div>
+	</div>
+	<div class="container canvas border d-none">
+		<canvas id="histograma" width="400" height="400"></canvas>
+		<a href="" download="histograma" class="btn btn-blue order-1" id="downloadA">Descargar</a>
+	</div>
+	<div class="container canvas border d-none">
+		<canvas id="poligono" width="400" height="400"></canvas>
+		<a href="" download="poligono" class="btn btn-blue order-1" id="downloadB">Descargar</a>
+	</div>
+	<div class="container canvas border d-none">
+		<canvas id="ojiva" width="400" height="400"></canvas>
+		<div><a href="" download="ojiva" class="btn btn-blue order-1" id="downloadC">Descargar</a>
+	</div>
+	<script type="text/javascript" src="js/datosagrupados.js">
+	</script>
+</body>
+</html>
