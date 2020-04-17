@@ -202,9 +202,11 @@ function readCsv(){
 		function calcModa(){ //calcula la moda
 			let moda = 0;
 			let indexModClass = fi.indexOf(Math.max(...fi));
-			let d1 = fi[indexModClass] - fi[indexModClass-1];
+			let d1 = 0;
+			if(fi[indexModClass-1]) d1 = fi[indexModClass] - fi[indexModClass-1];
+			else d1 = fi[indexModClass];
 			let d2 = -fi[indexModClass+1] + fi[indexModClass];
-			moda = lci[indexModClass] + (d1/(d1+d2))*c;
+			moda = parseFloat(lci[indexModClass]) + (d1/(d1+d2))*c;
 			return getRound(moda, rlen);
 		}
 		
@@ -254,7 +256,7 @@ function readCsv(){
 				else c = getRound(r/k,rlen,true);
 				console.log([k, r, rlen, c]);
 				localStorage.setItem("data", datos);
-				var show = "<tr class=\"td-blue\"><th>Li - Ls</th><th>Lri - Lrs</th><th>x<sub>i</sub></th><th>f<sub>i</sub></th><th>F<sub>i</sub></th><th>h<sub>i</sub></th><th>H<sub>i</sub></th><th>h<sub>i</sub>%</th></tr>";
+				var show = "<tr class=\"td-blue\"><th>Li - Ls</th>"+ /*"<th>Lri - Lrs</th>"*/"<th>x<sub>i</sub></th><th>f<sub>i</sub></th><th>F<sub>i</sub></th><th>h<sub>i</sub></th><th>H<sub>i</sub></th><th>h<sub>i</sub>%</th></tr>";
 				for(let i=0; i<k; i++){
 					if(i==0){
 						lci[i] = min;
@@ -262,7 +264,7 @@ function readCsv(){
 					}
 					else{
 						lci[i] = getRound(lci[i-1] + c, rlen);
-						lri[i] = getRound(lci[i-1] - Math.pow(10,(-rlen))/2,rlen+1);
+						lri[i] = getRound(lci[i] - Math.pow(10,(-rlen))/2,rlen+1);
 					}
 					lcs[i] = getRound(lci[i] + c,rlen+1);
 					lrs[i] = getRound(lcs[i] + Math.pow(10,(-rlen))/2,rlen+1);
@@ -287,13 +289,20 @@ function readCsv(){
 						Fi[i] = Fi[i-1] + fi[i];
 						Hi[i] = parseFloat((Hi[i-1] + hi[i]).toFixed(rlen+3));
 					}
-					show += "<tr><td>["+lci[i]+" - "+lcs[i]+"[</td><td>["+lri[i]+" - "+lrs[i]+"[</td><td>"+xi[i]+"</td><td>"+fi[i]+"</td><td>"+Fi[i]+"</td><td>"+hi[i]+"</td><td>"+Hi[i]+"</td><td>"+hip[i]+" %</td></tr>";
+					show += "<tr><td>["+lci[i]+" - "+lcs[i]+"[</td>"+ /*<td>["+lri[i]+" - "+lrs[i]+"[</td>*/"<td>"+xi[i]+"</td><td>"+fi[i]+"</td><td>"+Fi[i]+"</td><td>"+hi[i]+"</td><td>"+Hi[i]+"</td><td>"+hip[i]+" %</td></tr>";
 				}
 				table.innerHTML = show;
 				drawCanvas();
 				showDispersionM();
 				showTrendingM();
-				for(let l=0; l<2; l++) dNones[l].classList.remove('d-none');
+				for(let l=0; l<2; l++) show1[l].classList.remove('d-none');
+				show1[1].classList.add('d-flex-col');
+				/*Scroll to Table*/
+				let toTable = document.createElement('a');
+				toTable.setAttribute('href','#table');
+				document.form.appendChild(toTable);
+				toTable.click();
+				/*------*/
 			}
 		}
 		
@@ -309,7 +318,8 @@ function readCsv(){
 		      ctx2 = poligono.getContext('2d'),
 		      ctx3 = ojiva.getContext('2d');
 		      
-		var dNones = document.getElementsByClassName('canvas'); //array de div canvas
+		var show1 = document.getElementsByClassName('show-1'); //primeros elementos a mostrar
+		var arrayCanvas = document.getElementsByClassName('canvas');
 		
 		var datos = [], //Datos
 			n     = 0,  //Cantidad de datos
@@ -341,7 +351,10 @@ function readCsv(){
 			trendingM.classList.toggle('d-none');
 		});
 		showCharts.addEventListener('click', function (){
-			for(let i=2; i<dNones.length; i++) dNones[i].classList.toggle('d-none');
+			for(let i=0; i<arrayCanvas.length; i++) {
+				arrayCanvas[i].classList.toggle('d-none');
+				arrayCanvas[i].classList.toggle('d-flex-col');
+			}
 		});
 		btnFile.addEventListener('click', function(){
 			archivo.click();
@@ -367,4 +380,7 @@ function readCsv(){
 		});
 		scrollUp.addEventListener('click', () => {
 			divInfo.classList.toggle('d-none');
+		});
+		focusTextarea.addEventListener('click', () => {
+			textarea.focus();
 		});
