@@ -1,332 +1,272 @@
+/* Variables */
 :root{
-  		--blue: #007bff;
-  		--black: #343a40;
-  		--white: #eee;
-  		--gray: #888;
-  		--lite-gray: #d5d5d5;
-  		--red: #dc3545;
-  		--green: #28a745;
-  		--skyblue: #17a2b8;
-  		--purple: #6f42c1;
-  		--yellow: #ffc107;
-  		--gray: #6c757d;
-  	}
-  	
-  	*{
-  		margin: 0;
-  		padding: 0;
-  		box-sizing: border-box;
-  		font-family: sans-serif;
-  	}
-  	
-  	html{
-  		scroll-behavior: smooth;
-  	}
-  	
-  	body{
-  		padding: 1rem;
-  	}
-  	
-  	a{
-  		text-decoration: none;
-  		outline: none;
-  	}
-  	
-  	form{
-  		display: flex;
-  		flex-direction: column;
-  		align-items: center;
-  	}
-  	
-  	.title{
-  		text-align: center ;
-  		margin: .5rem 0;
-  	}
-  		
-  		h1{
-			font-size: 1.5rem;
-			font-weight: 300;
-			color: var(--blue);
-			margin: .5rem 0;
-  		}
-  	
-  		.title span{
-  			font-size: .7rem;
-  			color: var(--gray);
-  		}
-  	
-  	.textarea{
-  		position: relative;
-  		width: 100%;
-  	}
-  	
-  	textarea{
-  		outline: none;
-  		border-radius: 8px;
-  		width: 100%;
-  		height: 8rem;
-  		padding: 10px;
-  		font-size: 1rem;
-  		font-family: monospace;
-  		margin: .5rem 0;
-  		border: 1px solid var(--lite-gray);
-  	}
-  	
-  	textarea:focus{
-  		border-color: var(--blue);
-  	}
-  	
-  	.container{
-  		width: 100%;
-  		margin: .5rem 0;
-  	}
-  	
-  	.tables{
-  		display: flex;
-  		flex-direction: column;
-  		align-items: center;
-  	}
-  	
-  	.tables .table{
-  		height: 12rem;
-  		overflow-y: auto;
-  		width: auto;
-  	}
-  	
-  		form .clean{
-  			position: absolute;
-  			bottom: 1.5rem;
-  			right: 1rem;
-  			height: 1.5rem;
-  			width: 1.5rem;
-  			border: 1px solid var(--red);
-  			border-radius: 50%;
-  			display: flex;
-  			align-items: center;
-  			justify-content: center;
-  			font-size: 1.2rem;
-  			color: var(--red);
-  			transition: .5s;
-  			cursor: pointer;
-  		}
-  		
-  		form .clean:hover{
-  			color: white;
-  			background: var(--red);
-  		}
-  		
-  	.d-none{
-  		display: none;
-  	}
-  		
-  	.btn{
-  		color: var(--blue);
-  		border: 1px solid var(--blue);
-  		padding: 8px;
-  		margin: .5rem 0;
-  		border-radius: 6px;
-  		font-size: 1rem;
-  		text-align: center;
-  		width: 50%;
-  		transition: .5s;
-  		cursor: pointer;
-  	}
-  	
-  	.btn-purple{
-  		color: var(--purple);
-  		border-color: var(--purple);
-  	}
-  	
-  	.btn:hover{
-  		color: white;
-  		background: var(--blue);
-  	}
-  	
-  	.btn-purple:hover{
-  		background: var(--purple);
-  	}
-  	
-  	.table{
-  		width: 100%;
-  		overflow-x: auto;
-  		margin: .5rem 0;
-  		border: 1px solid var(--lite-gray);
-  		border-radius: 5px;
-  	}
-  	
-  	.freqTable{
-  		border-collapse: collapse;
-  		font-size: 1rem;
-  	}
-  	
-  	th, td{
-  		border-bottom: 1px solid var(--lite-gray);
+	--blue: #007bff;
+	--black: #343a40;
+	--gray: #888;
+	--lite-gray: #d5d5d5;
+	--red: #dc3545;
+	--green: #28a745;
+	--skyblue: #17a2b8;
+	--purple: #6f42c1;
+	--gray-skip: #f2f2f2;
+	--gray-border: #d5d5d5;
+	--gray-code: #f0f0f0;
+	--text-color: #000;
+	--background-color: #fff;
+	--border-rad: 6px;
+	--padding-btn: 8px;
+	--spacing-el: .5rem 0;
+	--fs-h1: 1.5rem;
+	--fs-p: 1rem;
+	--fs-td: .9rem;
+	--ff-sansSerif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--ff-monospace: monospace;
+} 
+
+/* Estilos generales */
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: var(--ff-sansSerif);
+	font-size: 100%;
+}
+
+html {scroll-behavior: smooth;}
+
+body {
+	padding: 1rem;
+	background: var(--background-color);
+}
+
+*:before, *:after {
+	position: absolute;
+	content: "";
+}
+
+a {text-decoration: none;}
+
+a, input, textarea {outline: none;}
+
+textarea {
+	background: transparent;
+	width: 100%;
+	outline: none;
+	border-radius: 8px;
+	color: var(--text-color);
+	height: 8rem;
+	padding: 10px;
+	font-size: 1rem;
+	font-family: var(--ff-monospace);
+	border: 1px solid var(--gray-border);
+}
+
+	textarea:focus {border: 1px solid var(--blue);}
+
+canvas {margin: var(--spacing-el);}
+
+h1{
+	color: var(--blue);
+	font-size: var(--fs-h1);
+	font-weight: 300;
+	margin: var(--spacing-el);
+}
+
+p {color: var(--text-color)}
+
+table {border-collapse: collapse;}
+
+th, td {
+  		border-bottom: 1px solid var(--gray-border);
   		padding: 15px;
   		white-space: nowrap;
   		text-align: center;
   		font-size: .9rem;
-  	}
-  	
-  	.order-1{
-  		color: white;
-  		background: var(--blue);
-  	}
-  	
-  	#trendingM{
-  		height: auto;
-  	}
-  	
-  	.td-left{
-  		text-align: left;
-  	}
-  	
-  	.td-purple{
-  		color: var(--purple);
-  	}
-  	
-  	.td-blue{
-  		color: var(--blue);
-  	}
-  	
-  	.canvas a{
-  		margin: .5rem auto;
-  		display: block;
-  		text-decoration: none;
-  	}
-  	
-  	.canvas canvas{
-  		margin: .5rem 0;
-  	}
-  	
-  	.border{
-  		border: 1px solid var(--lite-gray);
-  		border-radius: 10px;
-  		overflow: hidden;
-  	}
-  	
-  	.explain{
-  		font-style: italic;
-  		font-size: .6rem;
-  		margin: .5rem 0;
-  	}
-  	
-  	.border-purple{
-  		border: 1px solid var(--purple);
-  	}
-  	
-  	.border-blue{
-  		border: 1px solid var(--blue);
-  	}
-  	
-  	.order-2{
-  		padding: 8px;
-  		margin: .5rem 0;
-  		font-size: 1rem;
-  		color: var(--blue);
-  	}
-  	
-  	.info{
-  		font-size: 1rem;
-  		line-height: 1.5rem;
-  		padding: 1rem;
-  		width: 100%;
-  	}
-  	
-  	.info p{
-  		font-weight: 300;
-  		margin: 1rem 0;
-  	}
-  	
-  	.code{
-  		background: #f0f0f0;
-  		font-family: monospace;
-  		padding: 2px;
-  		white-space: nowrap;
-  	}
-  	
-  	a[class="blue"]{
-  		color: var(--blue);
-  	}
-  	
-  	a[class="purple"]{
-  		color: var(--purple);
-  	}
-  	
-  	.input{
-  		padding: 8px;
-  		margin: .5rem 0 .5rem 15%;;
-  		font-size: 1rem;
-  		border-radius: 0 6px 6px 0;
-  		border: 1px solid var(--blue);
-  		width: 85%;
-  		outline: none;
-  	}
-  	
-  	.divInput{
-  		position: relative;
-  		width: 100%;
-  	}
-  	
-  	.divInput:before{
-  		content: "K";
-  		position: absolute;
-  		top: .5rem;
-  		left: 0;
-  		height: calc(100% - 18px);
-  		width: calc(15% - 1px);
-  		border: 1px solid var(--blue);
-  		border-radius: 6px 0 0 6px;
+  		//color: var(--text-color);
+}
+
+tr:nth-child(even) {background-color: var(--gray-skip);}
+
+/* Botones */
+.btn {
+	font-size: var(--fs-p);
+	border: 1px solid;
+	padding: var(--padding-btn);
+	margin: var(--spacing-el);
+	border-radius: var(--border-rad);
+	text-align: center;
+	width: 50%;
+	transition: .5s;
+	cursor: pointer;
+}
+
+.order-1-blue {
+	color: white;
+	background: var(--blue);
+	border-color: var(--blue);
+}
+
+	.order-1-blue a {color: white;}
+
+.order-2-blue {
+	border-color: var(--blue);
+	color: var(--blue);
+}
+
+	.order-2-blue:hover {
+		color: white;
+		background: var(--blue);
+	}
+
+.order-3-blue {
+	border: none;
+	color: var(--blue);
+}
+
+.order-2-purple {
+	border-color: var(--purple);
+	color: var(--purple);
+}
+
+	.order-2-purple:hover {
+		color: white;
+		background: var(--purple);
+	}
+
+/* Contenedores */
+.container {
+	width: 100%;
+	margin: var(--spacing-el);
+}
+
+.title {text-align: center;}
+
+.info{
+	line-height: 1.5rem;
+	font-weight: 300;
+	padding: 1rem;
+}
+
+.info p {margin: 1rem auto;}
+
+.box {
+	border: 1px solid var(--gray-border);
+	border-radius: var(--border-rad);
+	margin: var(--spacing-el);
+}
+
+/* Tablas */
+.freqTable {height: 12rem;}
+.trendTable {height: 9rem;}
+.table {
+	width: auto;
+	margin: var(--spacing-el);
+}
+.td-left {text-align: left;}
+.td-blue {color: var(--blue);}
+.td-purple {color: var(--purple);}
+
+/* Formularios */
+.input-blue {
+	border: 1px solid var(--blue);
+	border-radius: 0 5px 5px 0;
+	margin: .5rem 0 .5rem 15%;
+	padding: var(--padding-btn);
+	width: 85%;
+	background: transparent;
+}
+
+.divInput {
+	width: 100%;
+	position: relative;
+}
+
+	.divInput:before {
+		top: .5rem;
+		left: 0;
+		height: calc(100% - 18px);
+		width: calc(15% - 1px);
+		border: 1px solid var(--blue);
+		border-radius: 6px 0 0 6px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-  		color: var(--blue);
-  	}
-  	
-  	.inputA:before{
-  		content: "D";
-  	}
-  	
-  	#divInfo{
-  		position: relative;
-  	}
-  	
-  	#scrollUp{
-  		position: absolute;
-  		bottom: .5rem;
-  		right: 1.5rem;
-  		height: 1.5rem;
-  		width: 1.5rem;
-  		color: var(--blue);
-  		border: 1px solid var(--blue);
-  		border-radius: 50%;
-  		display: flex;
-  		align-items: center;
-  		justify-content: center;
-  		font-weight: 900;
-  	}
-  	
-  	tr:nth-child(even) {background-color: #f2f2f2;}
-  	
-@media (min-width: 720px){
-	div[class="container table canvas"]{
-		min-width: 50%;
-		margin: .5rem auto;
+		color: var(--blue);
 	}
-	
-	.info{
-		font-size: .4rem;
-		line-height: .7rem;
-	}
-	
-	.info h1{
-		font-size: .5rem;
-	}
-	
-	#scrollUp{
-		font-size: .9rem;
-	}
-	
-	textarea {
-		font-size: .5rem;
-	}
+
+.inputK:before {content: "K";}
+
+.inputA:before {content: "A";}
+
+/* Spans */
+.small {
+	font-size: .7rem;
+	color: var(--gray);
+	white-space: nowrap;
+	margin: var(--spacing-el);
 }
+
+.i {font-style: italic;}
+
+.code {
+	background: var(--gray-code);
+	font-family: var(--ff-monospace);
+	padding: 2px;
+	font-size: 1rem;
+	white-space: nowrap;
+}
+
+.icon {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+	height: 1.5rem;
+	width: 1.5rem;
+	border: 1px solid;
+	border-radius: 50%;
+	font-size: 1.2rem;
+	transition: .5s;
+	cursor: pointer;
+}
+
+	.icon:hover {color: white;}
+
+.icon-blue {
+	border-color: var(--blue);
+	color: var(--blue); 
+}
+
+	.icon-blue:hover {background: var(--blue);}
+
+.icon-red {
+	border-color: var(--red);
+	color: var(--red);
+}
+
+	.icon-red:hover {background: var(--red);}
+
+/* Posicionamiento, display y overflow */
+.pos-abs{position: absolute;}
+.pos-rel {position: relative;}
+.d-none {display: none;}
+.of-x {overflow-x: auto;}
+.of-y {overflow-y: auto;}
+.of-h {overflow: hidden;}
+.d-flex-col {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.d-flex-row{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Anclas */
+.blue {color: var(--blue); font-weight: 400;}
+.purple {color: var(--purple); font-weight: 400;}
+
+/* Bordes */
+.border-blue {border-color: var(--blue);}
+.border-purple {border-color: var(--purple);}
