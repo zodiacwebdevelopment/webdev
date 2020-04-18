@@ -359,13 +359,15 @@ font-weight: bold;
 
                  function calcActive(infected,dead,recovered){
 let sum = 0;
-let dif = 0;
+let rec = 0;
+let dea = 0;
 let arrayActive = [];
 let activos = 0;
 for(let i=0; i<infected.length; i++){
-if(i>=9) dif = recovered[i-9] - recovered[i-10];
+if(i>=9) rec = recovered[i-9];
+if(i>=13) dea = dead[i-13];
 sum+=infected[i];
-activos = sum - dead[i] - dif;
+activos = sum - dea - rec;
 arrayActive.push(parseInt(activos));
 }
 return arrayActive;
