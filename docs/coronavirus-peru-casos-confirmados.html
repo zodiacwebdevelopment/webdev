@@ -359,11 +359,14 @@ font-weight: bold;
 
                  function calcActive(infected,dead,recovered){
 let sum = 0;
+let dif = 0;
 let arrayActive = [];
 let activos = 0;
 for(let i=0; i<infected.length; i++){
+if(recovered[i-1]) dif = recovered[i] - recovered[i-1];
+else dif = recovered[i];
 sum+=infected[i];
-activos = sum - dead[i] - recovered[i];
+activos = sum - dead[i] - dif;
 arrayActive.push(parseInt(activos));
 }
 return arrayActive;
@@ -491,7 +494,7 @@ borderColor: '#6f42c1'
 					lineTension: 0,
 					borderColor: '#dc3545', 
 					borderWidth: 2,
-					pointRadius: 2
+					pointRadius: 1
 				},{
                                         label: "Nuevas muertes",
 data: data.dead.slice(13),
@@ -499,7 +502,7 @@ fill: false,
 lineTension: 0,
 borderColor: "#fd7e14",
 borderWidth: 2,
-pointRadius: 2
+pointRadius: 1
                                 }]
 			},
 			options: {
