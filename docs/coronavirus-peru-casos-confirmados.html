@@ -12,7 +12,6 @@
   	padding: 0;
   	box-sizing: border-box;
   	font-family: sans-serif;
-background: yellow;
   	}
   	
   	html{font-size: 100%;}
@@ -364,7 +363,7 @@ let dif = 0;
 let arrayActive = [];
 let activos = 0;
 for(let i=0; i<infected.length; i++){
-if(i>=9) dif = recovered[i] - recovered[i-1];
+if(i>=9) dif = recovered[i-9] - recovered[i-10];
 sum+=infected[i];
 activos = sum - dead[i] - dif;
 arrayActive.push(parseInt(activos));
