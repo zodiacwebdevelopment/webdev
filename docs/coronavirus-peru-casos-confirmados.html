@@ -241,7 +241,7 @@ font-weight: bold;
 </div>
 <div class="p">
     <div class="center">
-	    <p>*En <span id="mayorCasos"></span> se encuentra la mayor cantidad de infectados (<span id="lima"></span> hasta la fecha), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos. Por eso no ha sido incluida en él.</p>
+	    <p>*En <span id="mayorCasos"></span> y <span id="callao"></span> se encuentran la mayor cantidad de infectados (<span id="lima"></span> y <span id="totalCallao"></span>, respectivamente), con esa cantidad en el gráfico no sería posible distinguir los datos de los otros departamentos. Por eso no ha sido incluida en él.</p>
     </div>
 </div>
 <form name="form">
@@ -357,6 +357,18 @@ font-weight: bold;
 		 	return dias;
 		 }
 
+                 function calcActive(infected,dead,recovered){
+let sum = 0;
+let arrayActive = [];
+let activos = 0;
+for(let i=0; i<infected.length; i++){
+sum+=infected[i];
+activos = sum - dead[i] - recovered[i];
+arrayActive.push(parseInt(activos));
+}
+return arrayActive;
+}
+
          function regresionLineal(array, futuro){
 			 let a     = 0, 
 				 b     = 0,
@@ -431,7 +443,7 @@ font-weight: bold;
 			 		backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ], 
 			 		borderColor: 'rgba(54, 162, 235, 1)', 
 			 		borderWidth: 2,
-			 		pointRadius: 2
+			 		pointRadius: 1
 			 		 },{
 			 		label: 'Nuevos casos',
 			 		data: data.infected,
@@ -439,8 +451,16 @@ font-weight: bold;
 			 		lineTension: 0,
 			 		borderWidth: 2,
 			 		borderColor: 'rgb(0,255,0)',
-			 		pointRadius: 2
-			 		}
+			 		pointRadius: 1
+			 		},{
+label: 'Casos activos',
+data: calcActive(data.infected,data.dead,data.recuperados),
+fill: false,
+lineTension: 0,
+borderWidth: 2,
+pointRadius: 1,
+borderColor: '#6f42c1'
+}
 			 	]}, 
 			 	options: { 
 			 		title: {
@@ -465,13 +485,22 @@ font-weight: bold;
 			data: {
 				labels: crearDias(data.dead.length,13),
 				datasets: [{
+                                        label: 'Total fallecidos',
 					data: acumular(data.dead.slice(13)),
 					fill: false,
 					lineTension: 0,
 					borderColor: '#dc3545', 
 					borderWidth: 2,
 					pointRadius: 2
-				}]
+				},{
+                                        label: "Nuevas muertes",
+data: data.dead.slice(13),
+fill: false,
+lineTension: 0,
+borderColor: "#fd7e14",
+borderWidth: 2,
+pointRadius: 2
+                                }]
 			},
 			options: {
 				title: {
@@ -480,7 +509,7 @@ font-weight: bold;
 					fontSize: 18
 				},
 				legend:{
-					display: false
+					display: true
 				},
 				scales: {
 					xAxes: [{
@@ -534,10 +563,10 @@ font-weight: bold;
 		var regionesChart = new Chart(ctx4, {
 			type: "horizontalBar",
 			data:{
-			labels: ordenarRegiones(data.departamentos).y.slice(1),
+			labels: ordenarRegiones(data.departamentos).y.slice(2),
 			datasets:[{
-				data: ordenarRegiones(data.departamentos).x.slice(1),
-				backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)' ]
+				data: ordenarRegiones(data.departamentos).x.slice(2),
+				backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)','rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)']
 			}]
 			},
 			options: {
@@ -610,8 +639,11 @@ font-weight: bold;
         tasam.innerHTML      = tasa(acumular(info.dead),info.infected).toFixed(2);
 		mayorCasos.innerHTML = ordenarRegiones(info.departamentos).y[0];
 		lima.innerHTML = ordenarRegiones(info.departamentos).x[0];
-		dia.innerHTML = info.infected.length;
-		hoy.innerHTML = info.fechas[info.infected.length-1];
+		totalCallao.innerHTML = ordenarRegiones(info.departamentos).x[1];
+
+dia.innerHTML = info.infected.length;
+		callao.innerHTML = ordenarRegiones(info.departamentos).y[1];
+hoy.innerHTML = info.fechas[info.infected.length-1];
 		mañana.innerHTML = info.fechas[info.infected.length];
 	}
 	</script>
