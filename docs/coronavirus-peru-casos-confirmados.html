@@ -363,7 +363,7 @@ let dif = 0;
 let arrayActive = [];
 let activos = 0;
 for(let i=0; i<infected.length; i++){
-if(recovered[i-1]) dif = recovered[i] - recovered[i-1];
+if(recovered[i-1]||recovered[i-1]==0) dif = recovered[i] - recovered[i-1];
 else dif = recovered[i];
 sum+=infected[i];
 activos = sum - dead[i] - dif;
