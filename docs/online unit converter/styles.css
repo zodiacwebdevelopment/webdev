@@ -108,7 +108,6 @@ main{
   display: block;
   padding: 2rem;
   margin: 2rem 0;
-  min-width: 40rem;
   font-size: 1.4rem;
   line-height: 1.8;
   border-left: 6px solid var(--btn-info);
