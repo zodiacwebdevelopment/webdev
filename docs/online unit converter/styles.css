@@ -99,6 +99,23 @@ main{
   padding-left: 1rem;
 }
 
+.instructions {
+  display: none;
+}
+
+.instructions.show{
+  background: white;
+  display: block;
+  padding: 2rem;
+  margin: 2rem 0;
+  min-width: 40rem;
+  font-size: 1.4rem;
+  line-height: 1.8;
+  border-left: 6px solid var(--btn-info);
+  border-radius: 5px;
+  box-shadow: 0 4px 3px 3px rgba(0,0,0,0.1);
+}
+
 @media (min-width: 600px){
   .myForm .unit-box{
     width: 23%;
@@ -148,6 +165,7 @@ main{
     min-width: 40rem;
     font-size: 1.4rem;
     line-height: 1.8;
+    border-left: 6px solid var(--btn-info);
     border-radius: 5px;
     box-shadow: 0 4px 3px 3px rgba(0,0,0,0.1);
     top: -5px;
