@@ -27,7 +27,7 @@ for(i=0; i<pInputs.length; i++){
 }
 
 for(i=0; i<dInputs.length; i++){
-  dInputs[i].addEventListener('change', returnHandler(i,dInputs,dFactors));
+  dInputs[i].addEventListener('input', returnHandler(i,dInputs,dFactors));
 }
 
 let inst = document.getElementById("instructions");
