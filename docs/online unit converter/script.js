@@ -1,8 +1,8 @@
 let pInputs = document.getElementsByClassName("pInput");
 let dInputs = document.getElementsByClassName("dInput");
 
-let pFactors = [1,0.10194,0.010194,101.904,0.00987,7.50062,7.50062,0.145038,20.8854,0.01];
-let dFactors = [1,10,5,0.5556];
+let pFactors = [10000000,1019400,101940,1019400000,98692,75006158,75006158,1450380,208854000,100000];
+let dFactors = [1000000,10000000,5000000,555556];
 
 function roundTo(number, decimals){
   let power = Math.pow(10, decimals);
@@ -12,22 +12,22 @@ function roundTo(number, decimals){
   return rounded;
 }
 
-function returnHandler(index, array, arrayFactors){
+function returnHandler(index, array, arrayFactors, exp){
   return function(){
     let value = Number(array[index].value);
     for(j=0; j<array.length; j++){
       let aValue = value * arrayFactors[j]/arrayFactors[index];
-      array[j].value = roundTo(aValue,5);
+      array[j].value = roundTo(aValue,exp);
     }
   }
 }
 
 for(i=0; i<pInputs.length; i++){
-  pInputs[i].addEventListener('change', returnHandler(i,pInputs,pFactors));
+  pInputs[i].addEventListener('input', returnHandler(i,pInputs,pFactors, 5));
 }
 
 for(i=0; i<dInputs.length; i++){
-  dInputs[i].addEventListener('input', returnHandler(i,dInputs,dFactors));
+  dInputs[i].addEventListener('input', returnHandler(i,dInputs,dFactors, 2));
 }
 
 let inst = document.getElementById("instructions");
