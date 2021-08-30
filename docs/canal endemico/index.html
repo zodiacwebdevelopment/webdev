@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../favicons/icon.svg" type="image/svg+xml">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.1/papaparse.min.js" integrity="sha512-EbdJQSugx0nVWrtyK3JdQQ/03mS3Q1UiAhRtErbwl1YL/+e2hZdlIcSURxxh7WXHTzn83sjlh2rysACoJGfb6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="styles.css">
-  <title>Canal endémico</title>
-</head>
-<body>
-  <form name="myForm" class="form"></form>
-  <!--
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="../favicons/icon.svg" type="image/svg+xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.1/papaparse.min.js"
+      integrity="sha512-EbdJQSugx0nVWrtyK3JdQQ/03mS3Q1UiAhRtErbwl1YL/+e2hZdlIcSURxxh7WXHTzn83sjlh2rysACoJGfb6g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Canal endémico</title>
+  </head>
+  <body>
+    <form name="myForm" class="form"></form>
+    <!--
   <input type="number" id="rows">
   <input type="number" id="cols">
   <input type="button" id="setRowsAndCols" value="Añadir filas y columnas">
   -->
-  <input type="button" id="calculate" value="Calcular">
-  <input type="file" id="inputFile">
-  <input type="checkbox" id="headerRow" checked>
-  <label for="headerRow">Primera fila como encabezado</label>
-  <input type="checkbox" id="headerCol" checked>
-  <label for="headerCol">Primera columna como encabezado</label>
-  <input type="checkbox" id="lastRow" checked>
-  <label for="lastRow">Última fila como incidencia</label>
-  <input type="button" id="btnUploadFile" value="Enviar archivo">
-  <div class="matrix" id="divSortedMatrix"></div>
-  <div class="divCanvas" id="divCanvas">
-    <canvas id="myChart" width="100" height="100"></canvas>
-    <input type="button" class="download" id="downloadGraph" value="Descargar gráfico">
-  </div>
-  <script src="script.js"></script>
-</body>
+    <input type="button" id="calculate" value="Calcular" />
+    <input type="file" id="inputFile" />
+    <input type="checkbox" id="headerRow" checked />
+    <label for="headerRow">Primera fila como encabezado</label>
+    <input type="checkbox" id="headerCol" checked />
+    <label for="headerCol">Primera columna como encabezado</label>
+    <input type="checkbox" id="lastRow" checked />
+    <label for="lastRow">Última fila como incidencia</label>
+    <input type="button" id="btnUploadFile" value="Enviar archivo" />
+    <div class="matrix" id="divSortedMatrix"></div>
+    <div class="divCanvas" id="divCanvas">
+      <canvas id="myChart"></canvas>
+      <input
+        type="button"
+        class="download"
+        id="downloadGraph"
+        value="Descargar gráfico"
+      />
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>

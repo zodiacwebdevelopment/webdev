@@ -33,3 +33,12 @@ table, td{
 .show{
   display: block;
 }
+
+.divCanvas {
+  width: 50vw;
+}
+
+#myChart {
+  width: 100%;
+  object-fit: contain;
+}
