@@ -2,7 +2,7 @@ let pInputs = document.getElementsByClassName("pInput");
 let dInputs = document.getElementsByClassName("dInput");
 
 let pFactors = [10000000,1019400,101940,1019400000,98692,75006158,75006158,1450380,208854000,100000];
-let dFactors = [1000000,10000000,5000000,555556];
+let dFactors = [18,180,90,10];
 
 function roundTo(number, decimals){
   let power = Math.pow(10, decimals);
