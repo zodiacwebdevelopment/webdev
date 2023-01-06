@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#2c5364">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envoltura convexa</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #0f2027, #203a46, #2c5364);
+            font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+        }
+
+        .form form {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            padding: 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            /*border: 1px solid black;*/
+        }
+
+        .svg {
+            width: 40vw;
+            height: 40vw;
+            margin-left: 10vw;
+        }
+
+      
+
+        .form {
+            width: 25vw;
+            height: 60vh;
+            margin-right: 10vw;
+        }
+
+        .form input {
+            width: 80%;
+            height: 20%;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: 2px solid #192d36;
+            border-radius: 10px;
+            color: #192d36;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .form input:hover {
+            border: 2px solid #147199;
+            color: #147199;
+        }
+
+        .form input[type="number"] {
+            height: 30%;
+            text-align: center;
+            font-size: 4rem;
+            font-weight: bold;
+            outline: 0;
+            border: none;
+        }
+
+        .form input[type="number"]:active {
+            border: none;
+        }
+
+        @keyframes draw {
+            from {
+                stroke-dasharray: 0, 2000;
+                stroke-dashoffset: 0;
+            }
+            to {
+                stroke-dasharray: 2000, 0;
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .line {
+            animation: draw 2.5s ease-in-out forwards;
+        }
+
+        .invisible {
+            display: none;
+        }
+
+        @media screen and (max-width:767px) {
+            body {
+                flex-direction: column;
+                height: auto;
+                background: linear-gradient(to right, #203a46, #2c5364);
+
+            }
+
+            .container {
+                margin: 0;
+                width: 80vw;
+                height: 80vw;
+            }
+
+            .svg {
+                margin: 10vw 0 5vw 0;
+            }
+
+            .form {
+                margin: 5vw 0 0 0;
+                height: 60vw;
+            }
+
+            .form input[type="number"] {
+                font-size: 3rem;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container svg"></div>
+    <div class="container form">
+        <form id="myForm" type="none">
+            <input title="Genera puntos aleatorios" type="button" id="randomize" value="Generar nuevo">
+            <input title="Muestra el orden de los ángulos" type="button" id="angles" value="Mostrar ángulos">
+            <label for="quantity">
+                Número de puntos: 
+            </label>
+            <input type="number" id="quantity" min="3" max="50" placeholder="10" pattern="[0-9]*" title="Please enter an integer number between 3 and 50" value="10">
+        </form>
+    </div>
+    
+    <script>
+        const width = 600;
+        const height = 600;
+        const margin = {
+            left:   30,
+            top:    30,
+            right:  30,
+            bottom: 30
+        };
+        const scale = {
+            x: 0,
+            y: 0
+        }
+        const min = {x: 0, y: 0};
+        const max = {x: 0, y: 0};
+
+        const canvas = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        canvas.setAttribute('width', '100%');
+        canvas.setAttribute('height', '100%');
+        canvas.setAttribute('preserve-aspect-ratio', 'xMinYMin slice');
+        document.querySelector('.svg').appendChild(canvas);
+
+        let buffer = [];
+
+        function enclosingPolygon(points) {
+            // Sort the points by x coordinate
+            points.sort((a, b) => a.x - b.x);
+
+            // Initialize the convex hull with the leftmost point
+            let hull = [points[0]];
+
+            // Start from the second point (the leftmost point has already been added)
+            for (let i = 1; i < points.length; i++) {
+                // Add the point to the convex hull
+                hull.push(points[i]);
+
+                // Keep removing the last point from the convex hull until it makes a left turn
+                while (hull.length > 2 && !isLeftTurn(hull[hull.length - 3], hull[hull.length - 2], hull[hull.length - 1])) {
+                hull.splice(hull.length - 2, 1);
+                }
+            }
+
+            // Add the rightmost point to the convex hull
+            hull.push(points[points.length - 1]);
+
+            // Start from the second to last point (the rightmost point has already been added)
+            for (let i = points.length - 2; i >= 0; i--) {
+                // Add the point to the convex hull
+                hull.push(points[i]);
+
+                // Keep removing the last point from the convex hull until it makes a left turn
+                while (hull.length > 2 && !isLeftTurn(hull[hull.length - 3], hull[hull.length - 2], hull[hull.length - 1])) {
+                hull.splice(hull.length - 2, 1);
+                }
+            }
+
+            // Return the points on the convex hull as the enclosing polygon
+            return hull;
+        }
+
+        function findConvexHull(vertices){
+            vertices.sort((a, b) => a.y - b.y);
+            let pivot = vertices[0];
+
+            vertices.sort((a, b) => {
+                // use the cross product to determine the polar angle
+                let det = (a.x - pivot.x) * (b.y - pivot.y) - (b.x - pivot.x) * (a.y - pivot.y);
+                if (det > 0) return -1; // a is more counterclockwise than b
+                if (det < 0) return 1; // a is more clockwise than b
+                // a and b are collinear
+                return 0;
+            });
+
+            buffer = vertices;
+
+            let hull = [vertices[0], vertices[1], vertices[2]];
+
+            function crossProduct(A, B, C) {
+                return (B.x - A.x) * (C.y - A.y) - (C.x - A.x) * (B.y - A.y);
+            }
+
+            for (let i = 3; i < vertices.length; i++) {
+                // keep removing points from the convex hull until the next point is counterclockwise from the last two points
+                while (hull.length >= 2 && crossProduct(hull[hull.length - 2], hull[hull.length - 1], vertices[i]) <= 0) {
+                    hull.pop();
+                }
+                hull.push(vertices[i]);
+            }
+
+            return hull;
+        }
+
+        function isLeftTurn(point1, point2, point3) {
+            // Calculate the cross product of the vectors formed by the three points
+            let crossProduct = (point2.x - point1.x) * (point3.y - point1.y) - (point2.y - point1.y) * (point3.x - point1.x);
+
+            // Return a boolean indicating whether the cross product is positive (left turn) or negative (right turn)
+            return crossProduct > 0;
+        }
+
+        function createRandomPoints(number, min, max){
+            let rPoints = []
+            
+            for(let i=0; i<number; i++){
+                rPoints.push({
+                    x: parseInt((Math.random()*(max-min))+min), 
+                    y: parseInt((Math.random()*(max-min))+min)})
+            }
+
+            return rPoints;
+        }
+
+        let points = createRandomPoints(10, 20, 100);
+
+        let enclosed = findConvexHull(points);
+
+        function drawPoints(svg, nodes, color){
+            min.x = Math.min.apply(null, nodes.map(function(x) {
+                return x.x
+            }));
+            max.x = Math.max.apply(null, nodes.map(function(x) {
+                return x.x
+            }));
+            min.y = Math.min.apply(null, nodes.map(function(x) {
+                return x.y
+            }));
+            max.y = Math.max.apply(null, nodes.map(function(x) {
+                return x.y
+            }));
+
+            scale.x = (svg.clientWidth-margin.left-margin.right)/(max.x-min.x);
+            scale.y = (svg.clientHeight-margin.top-margin.bottom)/(max.y-min.y)
+
+            for(let i=0; i<nodes.length; i++){
+                const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                point.setAttribute('cx', (nodes[i].x-min.x)*scale.x+margin.left);
+                point.setAttribute('cy', -(nodes[i].y-min.y)*scale.y-margin.top+svg.clientHeight);
+                point.setAttribute('r', svg.clientWidth/150);
+                point.setAttribute('fill', color);
+                svg.appendChild(point);
+
+                /*const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                label.setAttribute('x', (nodes[i].x-min.x)*scale.x+margin.left);
+                label.setAttribute('y', -(nodes[i].y-min.y)*scale.y-margin.top+height);
+                label.setAttribute('font-family', 'monospace');
+                label.setAttribute('font-size', 12);
+                svg.appendChild(label);
+                label.innerHTML = '('+nodes[i].x+', '+nodes[i].y+')';*/
+            }
+        }
+
+        function drawPolygon(svg, vertices, color){
+            /*for(let i=0; i<nodes.length-1; i++){
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', (nodes[i].x-min.x)*scale.x+margin.left);
+                line.setAttribute('y1', -(nodes[i].y-min.y)*scale.y-margin.top+height);
+                line.setAttribute('x2', (nodes[i+1].x-min.x)*scale.x+margin.left);
+                line.setAttribute('y2', -(nodes[i+1].y-min.y)*scale.y-margin.top+height);
+                line.setAttribute('stroke', color);
+                svg.appendChild(line);
+            }*/
+            let string = `M ${(vertices[0].x-min.x)*scale.x+margin.left} ${-(vertices[0].y-min.y)*scale.y-margin.top+svg.clientHeight} `;
+
+            for(let i=1; i<vertices.length; i++){
+                string += `L ${(vertices[i].x-min.x)*scale.x+margin.left} ${-(vertices[i].y-min.y)*scale.y-margin.top+svg.clientHeight} `;
+            }
+
+            string += 'Z';
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', string);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', 'green');
+            path.setAttribute('class', 'line');
+            canvas.appendChild(path);
+        }
+
+        function drawLineAngles(nodes){
+            for(let i=1; i<nodes.length; i++){
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', (nodes[0].x-min.x)*scale.x+margin.left);
+                line.setAttribute('y1', -(nodes[0].y-min.y)*scale.y-margin.top+canvas.clientHeight);
+                line.setAttribute('x2', (nodes[i].x-min.x)*scale.x+margin.left);
+                line.setAttribute('y2', -(nodes[i].y-min.y)*scale.y-margin.top+canvas.clientHeight);
+                line.setAttribute('stroke', 'red');
+                line.setAttribute('stroke-dasharray', '5, 10');
+                line.setAttribute('class', 'invisible');
+                canvas.appendChild(line);
+
+                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                label.setAttribute('x', (nodes[i].x-min.x)*scale.x+margin.left);
+                label.setAttribute('y', -(nodes[i].y-min.y)*scale.y-margin.top+canvas.clientHeight);
+                label.setAttribute('font-family', 'monospace');
+                label.setAttribute('font-size', 12);
+                //label.setAttribute('text-content', `[${i}]`);
+                label.innerHTML = `[${i}]`;
+                label.setAttribute('class', 'invisible');
+                canvas.appendChild(label);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            drawPoints(canvas, points, 'blue');
+            drawPolygon(canvas, enclosed, 'green');
+            drawLineAngles(buffer);
+        })
+
+        function randomize(){
+            canvas.innerHTML = '';
+            let input = document.querySelector("#quantity");
+            let number = 10;
+            if(input.value) number = input.value;
+            let randomPoints = createRandomPoints(number, 100, 1000);
+            let vertices = findConvexHull(randomPoints);
+            drawPoints(canvas, randomPoints, 'blue');
+            drawPolygon(canvas, vertices, 'green');
+            drawLineAngles(buffer);
+        }
+
+        const form = document.getElementById('myForm');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+        });
+
+        let button = document.querySelector("#randomize");
+        let inputNum = document.querySelector("#quantity");
+        let angles = document.querySelector("#angles");
+        button.addEventListener('click', randomize);
+        inputNum.addEventListener('change', randomize);
+        angles.addEventListener('click', () => {
+            //drawLineAngles(buffer);
+            const lines = document.querySelectorAll('line');
+            const texts = document.querySelectorAll('text');
+            lines.forEach(p => {
+                p.classList.toggle('invisible');
+            });
+            texts.forEach(t => {
+                t.classList.toggle('invisible');
+            });
+            
+            /*document.querySelector('line').style.classList.toggle('invisible', false);
+            document.querySelector('text').style.classList.toggle('invisible', false);*/
+        });
+
+    </script>
+</body>
+</html>
